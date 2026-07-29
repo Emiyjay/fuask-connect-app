@@ -1,9 +1,11 @@
 import { useState } from 'react'
-import { Text, TextInput, TouchableOpacity, StyleSheet, Alert, ActivityIndicator, ScrollView } from 'react-native'
+import { Text, TextInput, TouchableOpacity, StyleSheet, Alert, ActivityIndicator } from 'react-native'
 import { useRouter, useLocalSearchParams } from 'expo-router'
-import * as SecureStore from 'expo-secure-store'
 import api from '../config/api'
 import Logo from '../components/Logo'
+import AuthBackground from '../components/AuthBackground'
+
+const GREEN = '#1a7a3c'
 
 export default function VerifyScreen() {
   const router = useRouter()
@@ -23,7 +25,7 @@ export default function VerifyScreen() {
       const response = await api.post('/auth/verify', { email, otp })
       const { data } = response.data
       Alert.alert('Account verified!', `Welcome, ${data.displayName}. Please log in.`)
-      router.replace('/')
+      router.replace('/login')
     } catch (error: any) {
       const message = error.response?.data?.error || 'Verification failed. Check your connection.'
       Alert.alert('Verification failed', message)
@@ -49,10 +51,10 @@ export default function VerifyScreen() {
   }
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
+    <AuthBackground>
       <Logo />
       <Text style={styles.title}>Verify Your Email</Text>
-      <Text style={styles.subtitle}>Enter the 6-digit code we sent you</Text>
+      <Text style={styles.subtitle}>Enter the 6-digit code sent to your email</Text>
 
       <TextInput
         style={styles.input}
@@ -78,17 +80,16 @@ export default function VerifyScreen() {
       <TouchableOpacity onPress={handleResend} disabled={resending} style={styles.resendRow}>
         <Text style={styles.resendText}>{resending ? 'Sending...' : "Didn't get a code? Resend"}</Text>
       </TouchableOpacity>
-    </ScrollView>
+    </AuthBackground>
   )
 }
 
 const styles = StyleSheet.create({
-  container: { flexGrow: 1, justifyContent: 'center', padding: 24, backgroundColor: '#fff' },
-  title: { fontSize: 26, fontWeight: 'bold', textAlign: 'center', marginBottom: 8 },
-  subtitle: { fontSize: 16, color: '#666', textAlign: 'center', marginBottom: 28 },
-  input: { borderWidth: 1, borderColor: '#ccc', borderRadius: 8, padding: 14, marginBottom: 16, fontSize: 16 },
-  button: { backgroundColor: '#1a73e8', borderRadius: 8, padding: 16, alignItems: 'center' },
+  title: { fontSize: 22, fontWeight: 'bold', textAlign: 'center', marginBottom: 8, color: '#222' },
+  subtitle: { fontSize: 14, color: '#666', textAlign: 'center', marginBottom: 28 },
+  input: { borderWidth: 1, borderColor: '#ccc', borderRadius: 8, padding: 14, marginBottom: 16, fontSize: 16, backgroundColor: '#fff' },
+  button: { backgroundColor: GREEN, borderRadius: 8, padding: 16, alignItems: 'center' },
   buttonText: { color: '#fff', fontSize: 16, fontWeight: 'bold' },
   resendRow: { marginTop: 20, alignItems: 'center' },
-  resendText: { color: '#1a73e8', fontSize: 14 }
+  resendText: { color: GREEN, fontSize: 14 }
 })

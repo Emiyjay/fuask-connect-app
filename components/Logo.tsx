@@ -1,31 +1,14 @@
-import { View, Text, StyleSheet } from 'react-native'
-
-// Placeholder logo — swap for the real FUASK crest once you have the file.
-// To use a real image:
-//   1. Save the logo as assets/images/logo.png
-//   2. Replace the <View> below with:
-//      <Image source={require('../assets/images/logo.png')} style={styles.logoImage} />
+import { View, Image, StyleSheet } from 'react-native'
 
 export default function Logo() {
   return (
     <View style={styles.container}>
-      <View style={styles.circle}>
-        <Text style={styles.text}>FC</Text>
-      </View>
+      <Image source={require('../assets/images/logo.png')} style={styles.logo} />
     </View>
   )
 }
 
 const styles = StyleSheet.create({
   container: { alignItems: 'center', marginBottom: 16 },
-  circle: {
-    width: 80,
-    height: 80,
-    borderRadius: 40,
-    backgroundColor: '#1a73e8',
-    alignItems: 'center',
-    justifyContent: 'center'
-  },
-  text: { color: '#fff', fontSize: 28, fontWeight: 'bold' },
-  logoImage: { width: 80, height: 80, resizeMode: 'contain' }
+  logo: { width: 90, height: 90, resizeMode: 'contain' }
 })
