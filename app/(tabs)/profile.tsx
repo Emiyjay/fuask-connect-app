@@ -3,14 +3,22 @@ import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Alert } from 'rea
 import { useRouter } from 'expo-router'
 import * as SecureStore from 'expo-secure-store'
 import { Ionicons } from '@expo/vector-icons'
+import api from '../../config/api'
 
 const GREEN = '#1a7a3c'
+const HIERARCHY_ORDER = ['school', 'faculty', 'department', 'cohort']
 
 type UserData = {
   displayName: string
   role: string
   department: string
   level: string
+}
+
+type GroupItem = {
+  id: string
+  name: string
+  type: string
 }
 
 const SETTINGS_ROWS = [
@@ -24,10 +32,27 @@ const SETTINGS_ROWS = [
 export default function ProfileScreen() {
   const router = useRouter()
   const [user, setUser] = useState<UserData | null>(null)
+  const [academicChain, setAcademicChain] = useState<GroupItem[]>([])
 
   useEffect(() => {
     SecureStore.getItemAsync('user').then((raw) => {
       if (raw) setUser(JSON.parse(raw))
+    })
+
+    SecureStore.getItemAsync('token').then(async (token) => {
+      if (!token) return
+      try {
+        const res = await api.get('/groups/mine', {
+          headers: { Authorization: `Bearer ${token}` }
+        })
+        const groups: GroupItem[] = res.data.data || []
+        const chain = HIERARCHY_ORDER
+          .map((type) => groups.find((g) => g.type === type))
+          .filter((g): g is GroupItem => Boolean(g))
+        setAcademicChain(chain)
+      } catch {
+        // silently skip — profile still works without the breadcrumb
+      }
     })
   }, [])
 
@@ -64,6 +89,19 @@ export default function ProfileScreen() {
         </View>
       )}
 
+      {academicChain.length > 0 && (
+        <View style={styles.breadcrumbCard}>
+          {academicChain.map((g, i) => (
+            <View key={g.id} style={styles.breadcrumbRow}>
+              <Text style={styles.breadcrumbText}>{g.name}</Text>
+              {i < academicChain.length - 1 && (
+                <Ionicons name="chevron-down" size={14} color="#ccc" style={styles.breadcrumbArrow} />
+              )}
+            </View>
+          ))}
+        </View>
+      )}
+
       <View style={styles.settingsCard}>
         {SETTINGS_ROWS.map((row, i) => (
           <TouchableOpacity
@@ -92,11 +130,15 @@ const styles = StyleSheet.create({
   avatarCircle: { width: 84, height: 84, borderRadius: 42, backgroundColor: GREEN, alignItems: 'center', justifyContent: 'center', marginTop: 12, marginBottom: 14 },
   avatarText: { color: '#fff', fontSize: 28, fontWeight: '700' },
   name: { fontSize: 20, fontWeight: '700', color: '#222', marginBottom: 10 },
-  badgeRow: { flexDirection: 'row', gap: 8, marginBottom: 28 },
+  badgeRow: { flexDirection: 'row', gap: 8, marginBottom: 20 },
   badge: { backgroundColor: '#eaf5ee', paddingHorizontal: 12, paddingVertical: 5, borderRadius: 12 },
   badgeText: { fontSize: 12, fontWeight: '600', color: GREEN, textTransform: 'capitalize' },
   badgeRole: { backgroundColor: GREEN },
   badgeRoleText: { color: '#fff' },
+  breadcrumbCard: { width: '100%', backgroundColor: '#fff', borderRadius: 12, padding: 14, borderWidth: 1, borderColor: '#eee', marginBottom: 20 },
+  breadcrumbRow: { alignItems: 'center' },
+  breadcrumbText: { fontSize: 13, color: '#555', fontWeight: '600', textAlign: 'center' },
+  breadcrumbArrow: { marginVertical: 2 },
   settingsCard: { width: '100%', backgroundColor: '#fff', borderRadius: 12, borderWidth: 1, borderColor: '#eee', marginBottom: 20 },
   settingsRow: { flexDirection: 'row', alignItems: 'center', padding: 16, borderBottomWidth: 1, borderBottomColor: '#f0f0f0' },
   settingsRowLast: { borderBottomWidth: 0 },

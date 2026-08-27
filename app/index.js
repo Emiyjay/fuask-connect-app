@@ -1,13 +1,12 @@
-// --- app/intro.js ---
 import React, { useEffect, useRef, useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Animated } from 'react-native';
 import { useVideoPlayer, VideoView } from 'expo-video';
 import { useEventListener } from 'expo';
 import { useRouter } from 'expo-router';
 
-const LOGO_DURATION_MS = 3000;   // white screen, logo holds
-const VIDEO_DURATION_MS = 10000; // update this once you know your generated clip's real length
-const NEXT_ROUTE = '/login';
+const LOGO_DURATION_MS = 3000;
+const VIDEO_DURATION_MS = 10000;
+const NEXT_ROUTE = '/landing';
 
 export default function IntroScreen() {
   const router = useRouter();
@@ -15,7 +14,7 @@ export default function IntroScreen() {
   const [phase, setPhase] = useState('logo');
 
   const logoOpacity = useRef(new Animated.Value(0)).current;
-  const crossfade = useRef(new Animated.Value(1)).current; // 1 = logo visible, 0 = video visible
+  const crossfade = useRef(new Animated.Value(1)).current;
   const progress = useRef(new Animated.Value(0)).current;
 
   const player = useVideoPlayer(require('../assets/images/intro.mp4'), (p) => {

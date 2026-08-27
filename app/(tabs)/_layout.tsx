@@ -21,6 +21,10 @@ export default function TabsLayout() {
         name="learn"
         options={{ title: 'Learn', tabBarIcon: ({ color, size }) => <Ionicons name="book-outline" size={size} color={color} /> }}
       />
+       <Tabs.Screen
+        name="clubs"
+        options={{ title: 'Clubs', tabBarIcon: ({ color, size }) => <Ionicons name="people-outline" size={size} color={color} /> }}
+      />
       <Tabs.Screen
         name="market"
         options={{ title: 'Market', tabBarIcon: ({ color, size }) => <Ionicons name="storefront-outline" size={size} color={color} /> }}
