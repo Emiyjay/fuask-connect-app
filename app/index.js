@@ -11,6 +11,7 @@ const NEXT_ROUTE = '/landing';
 export default function IntroScreen() {
   const router = useRouter();
   const navigatedRef = useRef(false);
+  const isActiveRef = useRef(true);
   const [phase, setPhase] = useState('logo');
 
   const logoOpacity = useRef(new Animated.Value(0)).current;
@@ -31,6 +32,8 @@ export default function IntroScreen() {
   useEventListener(player, 'playToEnd', goNext);
 
   useEffect(() => {
+    isActiveRef.current = true;
+
     Animated.timing(logoOpacity, {
       toValue: 1,
       duration: 500,
@@ -49,14 +52,22 @@ export default function IntroScreen() {
         duration: 500,
         useNativeDriver: true,
       }).start(() => {
+        // Guard against a stale timer firing after the player was
+        // torn down (e.g. by a Fast Refresh reload mid-animation).
+        if (!isActiveRef.current) return;
         setPhase('video');
-        player.play();
+        try {
+          player.play();
+        } catch {
+          goNext();
+        }
       });
     }, LOGO_DURATION_MS);
 
     const finalTimer = setTimeout(goNext, LOGO_DURATION_MS + VIDEO_DURATION_MS);
 
     return () => {
+      isActiveRef.current = false;
       clearTimeout(switchTimer);
       clearTimeout(finalTimer);
     };
