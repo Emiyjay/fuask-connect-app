@@ -32,10 +32,18 @@ export async function getTheirPublicKey(userId: string, token: string) {
   return key || null
 }
 
-export function encryptMessage(plaintext: string, theirPublicKeyB64: string, mySecretKeyB64: string) {
-  const nonce = nacl.randomBytes(nacl.box.nonceLength)
-  const ciphertext = nacl.box(decodeUTF8(plaintext), nonce, decodeBase64(theirPublicKeyB64), decodeBase64(mySecretKeyB64))
-  return { ciphertext: encodeBase64(ciphertext), nonce: encodeBase64(nonce) }
+export function encryptForBoth(plaintext: string, theirPublicKeyB64: string, myPublicKeyB64: string, mySecretKeyB64: string) {
+  const messageBytes = decodeUTF8(plaintext)
+  const receiverNonce = nacl.randomBytes(nacl.box.nonceLength)
+  const senderNonce = nacl.randomBytes(nacl.box.nonceLength)
+  const ciphertext = nacl.box(messageBytes, receiverNonce, decodeBase64(theirPublicKeyB64), decodeBase64(mySecretKeyB64))
+  const senderCiphertext = nacl.box(messageBytes, senderNonce, decodeBase64(myPublicKeyB64), decodeBase64(mySecretKeyB64))
+  return {
+    ciphertext: encodeBase64(ciphertext),
+    nonce: encodeBase64(receiverNonce),
+    senderCiphertext: encodeBase64(senderCiphertext),
+    senderNonce: encodeBase64(senderNonce)
+  }
 }
 
 export function decryptMessage(ciphertextB64: string, nonceB64: string, theirPublicKeyB64: string, mySecretKeyB64: string) {
