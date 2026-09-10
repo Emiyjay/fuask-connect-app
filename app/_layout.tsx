@@ -6,16 +6,19 @@ import * as SecureStore from 'expo-secure-store'
 import { setSessionExpiredHandler } from '../utils/session'
 
 const PUBLIC_ROUTES = new Set([
-  '/',
-  '/index',
-  '/landing',
-  '/get-started',
   '/login',
   '/register',
   '/verify',
   '/forgot-password',
   '/privacy',
   '/terms',
+])
+
+const ONBOARDING_ROUTES = new Set([
+  '/',
+  '/index',
+  '/landing',
+  '/get-started',
 ])
 
 export default function RootLayout() {
@@ -32,22 +35,32 @@ export default function RootLayout() {
     let active = true
 
     async function checkSession() {
-      const token = await SecureStore.getItemAsync('token')
-      if (!active) return
+      try {
+        const token = await SecureStore.getItemAsync('token')
+        if (!active) return
 
-      const isPublicRoute = PUBLIC_ROUTES.has(pathname)
+        const isPublicRoute = PUBLIC_ROUTES.has(pathname)
+        const isOnboardingRoute = ONBOARDING_ROUTES.has(pathname)
 
-      if (!token && !isPublicRoute) {
-        router.replace('/login')
-        return
+        if (!token && !isPublicRoute && !isOnboardingRoute) {
+          router.replace('/login')
+          return
+        }
+
+        if (token && (isOnboardingRoute || pathname === '/login' || pathname === '/register')) {
+          router.replace('/home')
+          return
+        }
+
+        setCheckingSession(false)
+      } catch {
+        if (!active) return
+        if (!PUBLIC_ROUTES.has(pathname) && !ONBOARDING_ROUTES.has(pathname)) {
+          router.replace('/login')
+          return
+        }
+        setCheckingSession(false)
       }
-
-      if (token && (pathname === '/login' || pathname === '/register')) {
-        router.replace('/home')
-        return
-      }
-
-      setCheckingSession(false)
     }
 
     checkSession()
