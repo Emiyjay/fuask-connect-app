@@ -36,8 +36,10 @@ export default function LandingScreen() {
       <View style={styles.photoWrap}>
         {/* Replace with a real photo of the FUASK campus at assets/images/campus.jpg */}
         <Image source={require('../assets/images/campus.jpg')} style={styles.photo} resizeMode="cover" />
-        <LinearGradient(to bottom, #0B2A52 0%, transparent 30%, transparent 70%, #0b2a52 100%) 
-	 colors={['transparent', '#ffffff']}
+        <LinearGradient
+          colors={['transparent', '#ffffff']}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 0, y: 1 }}
           style={styles.photoFade}
         />
       </View>
