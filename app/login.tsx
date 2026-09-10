@@ -4,6 +4,7 @@ import * as SecureStore from 'expo-secure-store'
 import { Link, useRouter } from 'expo-router'
 import { Ionicons } from '@expo/vector-icons'
 import api from '../config/api'
+import { ensureKeysRegistered } from '../utils/crypto'
 import Logo from '../components/Logo'
 import AuthBackground from '../components/AuthBackground'
 
@@ -27,6 +28,7 @@ export default function LoginScreen() {
       const { token, data } = response.data
       await SecureStore.setItemAsync('token', token)
       await SecureStore.setItemAsync('user', JSON.stringify(data))
+      await ensureKeysRegistered(token)
       router.replace('/home')
     } catch (error: any) {
       const message = error.response?.data?.error || 'Something went wrong. Check your connection.'
