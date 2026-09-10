@@ -33,6 +33,7 @@ export default function ProfileScreen() {
   const router = useRouter()
   const [user, setUser] = useState<UserData | null>(null)
   const [academicChain, setAcademicChain] = useState<GroupItem[]>([])
+  const [loggingOut, setLoggingOut] = useState(false)
 
   useEffect(() => {
     SecureStore.getItemAsync('user').then((raw) => {
@@ -65,9 +66,25 @@ export default function ProfileScreen() {
   }
 
   async function handleLogout() {
-    await SecureStore.deleteItemAsync('token')
-    await SecureStore.deleteItemAsync('user')
-    router.replace('/login')
+    if (loggingOut) return
+    setLoggingOut(true)
+
+    try {
+      const token = await SecureStore.getItemAsync('token')
+      if (token) {
+        try {
+          await api.post('/auth/logout', {}, {
+            headers: { Authorization: `Bearer ${token}` }
+          })
+        } catch {
+          // Local logout must still complete if the network is unavailable.
+        }
+      }
+    } finally {
+      await SecureStore.deleteItemAsync('token')
+      await SecureStore.deleteItemAsync('user')
+      router.replace('/login')
+    }
   }
 
   const initials = user?.displayName
@@ -108,6 +125,7 @@ export default function ProfileScreen() {
             key={row.key}
             style={[styles.settingsRow, i === SETTINGS_ROWS.length - 1 && styles.settingsRowLast]}
             onPress={() => handleRowPress(row)}
+            disabled={loggingOut}
           >
             <Ionicons name={row.icon as any} size={20} color={GREEN} style={styles.settingsIcon} />
             <Text style={styles.settingsLabel}>{row.label}</Text>
@@ -116,9 +134,9 @@ export default function ProfileScreen() {
         ))}
       </View>
 
-      <TouchableOpacity style={styles.logoutRow} onPress={handleLogout}>
+      <TouchableOpacity style={styles.logoutRow} onPress={handleLogout} disabled={loggingOut}>
         <Ionicons name="log-out-outline" size={20} color="#c0392b" style={styles.settingsIcon} />
-        <Text style={styles.logoutText}>Log Out</Text>
+        <Text style={styles.logoutText}>{loggingOut ? 'Logging Out…' : 'Log Out'}</Text>
       </TouchableOpacity>
     </ScrollView>
   )
