@@ -4,6 +4,7 @@ import { useLocalSearchParams, useRouter, Stack } from 'expo-router'
 import * as SecureStore from 'expo-secure-store'
 import { Ionicons } from '@expo/vector-icons'
 import api from '../../config/api'
+import { getOrCreateKeyPair, ensureKeysRegistered, getTheirPublicKey, encryptMessage, decryptMessage } from '../../utils/crypto'
 
 const GREEN = '#1a7a3c'
 
@@ -11,8 +12,10 @@ type Message = {
   _id: string
   senderId: string
   receiverId: string
-  content: string
+  ciphertext: string
+  nonce: string
   createdAt: string
+  decryptedContent?: string
 }
 
 export default function ConversationScreen() {
@@ -21,6 +24,8 @@ export default function ConversationScreen() {
   const listRef = useRef<FlatList>(null)
   const [messages, setMessages] = useState<Message[]>([])
   const [myId, setMyId] = useState<string | null>(null)
+  const [mySecretKey, setMySecretKey] = useState<string | null>(null)
+  const [theirPublicKey, setTheirPublicKey] = useState<string | null>(null)
   const [text, setText] = useState('')
   const [loading, setLoading] = useState(true)
   const [sending, setSending] = useState(false)
@@ -37,32 +42,65 @@ export default function ConversationScreen() {
   const loadThread = useCallback(async () => {
     const token = await getToken()
     if (!token || !userId) return
+
     try {
+      const rawUser = await SecureStore.getItemAsync('user')
+      const storedUser = rawUser ? JSON.parse(rawUser) : null
+      const currentId = storedUser?.id || storedUser?._id || null
+      const { secretKey } = await getOrCreateKeyPair()
+
+      setMyId(currentId)
+      setMySecretKey(secretKey)
+      await ensureKeysRegistered(token)
+
+      const recipientKey = await getTheirPublicKey(userId, token)
+      setTheirPublicKey(recipientKey)
+
       const res = await api.get(`/messages/${userId}`, { headers: { Authorization: `Bearer ${token}` } })
-      setMessages(res.data.data || [])
+      const rawMessages = res.data.data || []
+      const decryptedMessages = rawMessages.map((message: Message) => ({
+        ...message,
+        decryptedContent: recipientKey
+          ? decryptMessage(message.ciphertext, message.nonce, recipientKey, secretKey) || undefined
+          : undefined
+      }))
+      setMessages(decryptedMessages)
     } catch {
       Alert.alert('Error', 'Could not load this conversation.')
     }
   }, [userId])
 
   useEffect(() => {
-    SecureStore.getItemAsync('user').then((raw) => {
-      if (raw) setMyId(JSON.parse(raw)?.id || null)
-    })
     loadThread().finally(() => setLoading(false))
   }, [loadThread])
 
   async function handleSend() {
-    if (!text.trim() || !userId) return
+    const trimmedText = text.trim()
+    if (!trimmedText || !userId) return
+
     const token = await getToken()
     if (!token) return
+
     setSending(true)
     try {
+      const keyPair = await getOrCreateKeyPair()
+      const recipientKey = theirPublicKey || await getTheirPublicKey(userId, token)
+
+      if (!recipientKey) {
+        Alert.alert(
+          'Secure messaging unavailable',
+          'This account has not registered a secure messaging key yet. Ask them to open Messages once and try again.'
+        )
+        return
+      }
+
+      const { ciphertext, nonce } = encryptMessage(trimmedText, recipientKey, keyPair.secretKey)
       await api.post(
         '/messages',
-        { receiverId: userId, content: text },
+        { receiverId: userId, ciphertext, nonce },
         { headers: { Authorization: `Bearer ${token}` } }
       )
+
       setText('')
       await loadThread()
       setTimeout(() => listRef.current?.scrollToEnd({ animated: true }), 100)
@@ -97,9 +135,10 @@ export default function ConversationScreen() {
         ListEmptyComponent={<Text style={styles.emptyText}>No messages yet. Say hello.</Text>}
         renderItem={({ item }) => {
           const isMine = item.senderId === myId
+          const content = item.decryptedContent || 'Unable to decrypt this secure message.'
           return (
             <View style={[styles.bubble, isMine ? styles.bubbleMine : styles.bubbleTheirs]}>
-              <Text style={[styles.bubbleText, isMine && styles.bubbleTextMine]}>{item.content}</Text>
+              <Text style={[styles.bubbleText, isMine && styles.bubbleTextMine]}>{content}</Text>
             </View>
           )
         }}
