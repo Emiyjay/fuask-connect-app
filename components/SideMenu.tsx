@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { View, Text, StyleSheet, TouchableOpacity, Animated, Dimensions, Modal } from 'react-native'
 import { useRouter } from 'expo-router'
 import * as SecureStore from 'expo-secure-store'
@@ -17,9 +17,15 @@ const ITEMS = [
 export default function SideMenu({ visible, onClose }: { visible: boolean; onClose: () => void }) {
   const router = useRouter()
   const slideAnim = useRef(new Animated.Value(-WIDTH)).current
+  const [isHOD, setIsHOD] = useState(false)
 
   useEffect(() => {
     Animated.timing(slideAnim, { toValue: visible ? 0 : -WIDTH, duration: 250, useNativeDriver: true }).start()
+    if (visible) {
+      SecureStore.getItemAsync('user').then(raw => {
+        try { setIsHOD(JSON.parse(raw || '{}')?.role === 'hod') } catch { setIsHOD(false) }
+      })
+    }
   }, [visible])
 
   async function handleLogout() {
@@ -43,15 +49,21 @@ export default function SideMenu({ visible, onClose }: { visible: boolean; onClo
                 style={styles.row}
                 accessibilityRole="button"
                 accessibilityLabel={item.label}
-                onPress={() => {
-                  onClose()
-                  router.push(item.route as any)
-                }}
+                onPress={() => { onClose(); router.push(item.route as any) }}
               >
                 <Ionicons name={item.icon as any} size={20} color={GREEN} style={styles.rowIcon} />
                 <Text style={styles.rowLabel}>{item.label}</Text>
               </TouchableOpacity>
             ))}
+            {isHOD && <TouchableOpacity
+              style={styles.row}
+              accessibilityRole="button"
+              accessibilityLabel="Timetable Publisher"
+              onPress={() => { onClose(); router.push('/hod/timetable' as any) }}
+            >
+              <Ionicons name="create-outline" size={20} color={GREEN} style={styles.rowIcon} />
+              <Text style={styles.rowLabel}>Timetable Publisher</Text>
+            </TouchableOpacity>}
             <TouchableOpacity style={styles.row} onPress={handleLogout} accessibilityRole="button" accessibilityLabel="Log out">
               <Ionicons name="log-out-outline" size={20} color="#c0392b" style={styles.rowIcon} />
               <Text style={[styles.rowLabel, { color: '#c0392b' }]}>Log Out</Text>
