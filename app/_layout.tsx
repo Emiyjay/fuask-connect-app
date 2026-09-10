@@ -1,6 +1,6 @@
 import 'react-native-get-random-values'
 import { useEffect, useState } from 'react'
-import { ActivityIndicator, View } from 'react-native'
+import { ActivityIndicator, StatusBar, StyleSheet, View } from 'react-native'
 import { Stack, usePathname, useRouter } from 'expo-router'
 import * as SecureStore from 'expo-secure-store'
 import { setSessionExpiredHandler } from '../utils/session'
@@ -72,11 +72,27 @@ export default function RootLayout() {
 
   if (checkingSession) {
     return (
-      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+      <View style={styles.loadingScreen} accessibilityRole="progressbar" accessibilityLabel="Checking your session">
+        <StatusBar barStyle="dark-content" backgroundColor="#fff" />
         <ActivityIndicator size="small" />
       </View>
     )
   }
 
-  return <Stack />
+  return (
+    <View style={styles.root}>
+      <StatusBar barStyle="dark-content" backgroundColor="#fff" />
+      <Stack screenOptions={{ contentStyle: { backgroundColor: '#fff' } }} />
+    </View>
+  )
 }
+
+const styles = StyleSheet.create({
+  root: { flex: 1, backgroundColor: '#fff' },
+  loadingScreen: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#fff',
+  },
+})
