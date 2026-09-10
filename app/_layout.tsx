@@ -1,6 +1,63 @@
 import 'react-native-get-random-values'
-import { Stack } from "expo-router";
+import { useEffect, useState } from 'react'
+import { ActivityIndicator, View } from 'react-native'
+import { Stack, usePathname, useRouter } from 'expo-router'
+import * as SecureStore from 'expo-secure-store'
+
+const PUBLIC_ROUTES = new Set([
+  '/',
+  '/index',
+  '/landing',
+  '/get-started',
+  '/login',
+  '/register',
+  '/verify',
+  '/forgot-password',
+  '/privacy',
+  '/terms',
+])
 
 export default function RootLayout() {
-  return <Stack />;
+  const router = useRouter()
+  const pathname = usePathname()
+  const [checkingSession, setCheckingSession] = useState(true)
+
+  useEffect(() => {
+    let active = true
+
+    async function checkSession() {
+      const token = await SecureStore.getItemAsync('token')
+      if (!active) return
+
+      const isPublicRoute = PUBLIC_ROUTES.has(pathname)
+
+      if (!token && !isPublicRoute) {
+        router.replace('/login')
+        return
+      }
+
+      if (token && (pathname === '/login' || pathname === '/register')) {
+        router.replace('/home')
+        return
+      }
+
+      setCheckingSession(false)
+    }
+
+    checkSession()
+
+    return () => {
+      active = false
+    }
+  }, [pathname, router])
+
+  if (checkingSession) {
+    return (
+      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+        <ActivityIndicator size="small" />
+      </View>
+    )
+  }
+
+  return <Stack />
 }
