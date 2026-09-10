@@ -24,7 +24,6 @@ export default function ConversationScreen() {
   const listRef = useRef<FlatList>(null)
   const [messages, setMessages] = useState<Message[]>([])
   const [myId, setMyId] = useState<string | null>(null)
-  const [mySecretKey, setMySecretKey] = useState<string | null>(null)
   const [theirPublicKey, setTheirPublicKey] = useState<string | null>(null)
   const [text, setText] = useState('')
   const [loading, setLoading] = useState(true)
@@ -50,7 +49,6 @@ export default function ConversationScreen() {
       const { secretKey } = await getOrCreateKeyPair()
 
       setMyId(currentId)
-      setMySecretKey(secretKey)
       await ensureKeysRegistered(token)
 
       const recipientKey = await getTheirPublicKey(userId, token)
