@@ -58,8 +58,11 @@ export default function ClubsScreen() {
 
   async function onRefresh() {
     setRefreshing(true)
-    await loadClubs()
-    setRefreshing(false)
+    try {
+      await loadClubs()
+    } finally {
+      setRefreshing(false)
+    }
   }
 
   async function handleJoin(clubId: string) {
