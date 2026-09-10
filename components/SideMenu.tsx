@@ -8,10 +8,10 @@ const GREEN = '#1a7a3c'
 const WIDTH = Dimensions.get('window').width * 0.78
 
 const ITEMS = [
-  { key: 'timetable', label: 'Timetable', icon: 'calendar-outline' },
-  { key: 'lostfound', label: 'Lost & Found', icon: 'search-outline' },
-  { key: 'messages', label: 'Messages', icon: 'chatbubble-outline' },
-  { key: 'about', label: 'About FUASK Connect', icon: 'information-circle-outline' },
+  { key: 'timetable', label: 'Timetable', icon: 'calendar-outline', route: '/timetable' },
+  { key: 'lostfound', label: 'Lost & Found', icon: 'search-outline', route: '/lostfound' },
+  { key: 'messages', label: 'Messages', icon: 'chatbubble-outline', route: '/messages' },
+  { key: 'about', label: 'About FUASK Connect', icon: 'information-circle-outline', route: '/about' },
 ] as const
 
 export default function SideMenu({ visible, onClose }: { visible: boolean; onClose: () => void }) {
@@ -19,11 +19,7 @@ export default function SideMenu({ visible, onClose }: { visible: boolean; onClo
   const slideAnim = useRef(new Animated.Value(-WIDTH)).current
 
   useEffect(() => {
-    Animated.timing(slideAnim, {
-      toValue: visible ? 0 : -WIDTH,
-      duration: 250,
-      useNativeDriver: true
-    }).start()
+    Animated.timing(slideAnim, { toValue: visible ? 0 : -WIDTH, duration: 250, useNativeDriver: true }).start()
   }, [visible])
 
   async function handleLogout() {
@@ -41,22 +37,22 @@ export default function SideMenu({ visible, onClose }: { visible: boolean; onClo
         <Animated.View style={[styles.panel, { transform: [{ translateX: slideAnim }] }]}>
           <TouchableOpacity activeOpacity={1}>
             <Text style={styles.panelTitle}>FUASK Connect</Text>
-
             {ITEMS.map((item) => (
               <TouchableOpacity
                 key={item.key}
                 style={styles.row}
+                accessibilityRole="button"
+                accessibilityLabel={item.label}
                 onPress={() => {
                   onClose()
-                  alert(`${item.label} — coming soon.`)
+                  router.push(item.route as any)
                 }}
               >
                 <Ionicons name={item.icon as any} size={20} color={GREEN} style={styles.rowIcon} />
                 <Text style={styles.rowLabel}>{item.label}</Text>
               </TouchableOpacity>
             ))}
-
-            <TouchableOpacity style={styles.row} onPress={handleLogout}>
+            <TouchableOpacity style={styles.row} onPress={handleLogout} accessibilityRole="button" accessibilityLabel="Log out">
               <Ionicons name="log-out-outline" size={20} color="#c0392b" style={styles.rowIcon} />
               <Text style={[styles.rowLabel, { color: '#c0392b' }]}>Log Out</Text>
             </TouchableOpacity>
@@ -75,4 +71,3 @@ const styles = StyleSheet.create({
   rowIcon: { marginRight: 14 },
   rowLabel: { fontSize: 15, color: '#333', fontWeight: '500' }
 })
-
