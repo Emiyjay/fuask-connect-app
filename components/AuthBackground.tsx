@@ -1,7 +1,7 @@
 import { ReactNode, useEffect, useRef, useState } from 'react'
-import { View, Animated, StyleSheet, Dimensions, ScrollView } from 'react-native'
+import { View, Animated, StyleSheet, ScrollView, useWindowDimensions } from 'react-native'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
-const { width, height } = Dimensions.get('window')
 const WATERMARK_OPACITY = 0.1
 
 // Add more images here later to turn this into a true rotating slideshow:
@@ -11,6 +11,8 @@ const SLIDES = [require('../assets/images/logo.png')]
 export default function AuthBackground({ children }: { children: ReactNode }) {
   const [index, setIndex] = useState(0)
   const opacity = useRef(new Animated.Value(WATERMARK_OPACITY)).current
+  const { width, height } = useWindowDimensions()
+  const insets = useSafeAreaInsets()
 
   useEffect(() => {
     if (SLIDES.length <= 1) return
@@ -21,12 +23,41 @@ export default function AuthBackground({ children }: { children: ReactNode }) {
       })
     }, 6000)
     return () => clearInterval(timer)
-  }, [])
+  }, [opacity])
+
+  const watermarkSize = Math.min(Math.max(width * 1.15, 280), 520)
+  const contentPaddingHorizontal = Math.min(Math.max(width * 0.06, 20), 32)
 
   return (
     <View style={styles.root}>
-      <Animated.Image source={SLIDES[index]} style={[styles.bgImage, { opacity }]} />
-      <ScrollView contentContainerStyle={styles.content} keyboardShouldPersistTaps="handled">
+      <Animated.Image
+        source={SLIDES[index]}
+        style={[
+          styles.bgImage,
+          {
+            width: watermarkSize,
+            height: watermarkSize,
+            top: Math.max(insets.top + height * 0.12, 72),
+          },
+          { opacity },
+        ]}
+        accessible={false}
+        pointerEvents="none"
+      />
+      <ScrollView
+        contentContainerStyle={[
+          styles.content,
+          {
+            paddingTop: Math.max(insets.top + 20, 32),
+            paddingBottom: Math.max(insets.bottom + 24, 32),
+            paddingHorizontal: contentPaddingHorizontal,
+          },
+        ]}
+        keyboardShouldPersistTaps="handled"
+        keyboardDismissMode="on-drag"
+        showsVerticalScrollIndicator={false}
+        contentInsetAdjustmentBehavior="automatic"
+      >
         {children}
       </ScrollView>
     </View>
@@ -36,12 +67,12 @@ export default function AuthBackground({ children }: { children: ReactNode }) {
 const styles = StyleSheet.create({
   root: { flex: 1, backgroundColor: '#fff' },
   bgImage: {
-    width: width * 1.4,
-    height: width * 1.4,
     position: 'absolute',
     resizeMode: 'contain',
     alignSelf: 'center',
-    top: height * 0.15
   },
-  content: { flexGrow: 1, justifyContent: 'center', padding: 24 }
+  content: {
+    flexGrow: 1,
+    justifyContent: 'center',
+  },
 })
