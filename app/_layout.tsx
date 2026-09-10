@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 import { ActivityIndicator, View } from 'react-native'
 import { Stack, usePathname, useRouter } from 'expo-router'
 import * as SecureStore from 'expo-secure-store'
+import { setSessionExpiredHandler } from '../utils/session'
 
 const PUBLIC_ROUTES = new Set([
   '/',
@@ -21,6 +22,11 @@ export default function RootLayout() {
   const router = useRouter()
   const pathname = usePathname()
   const [checkingSession, setCheckingSession] = useState(true)
+
+  useEffect(() => {
+    setSessionExpiredHandler(() => router.replace('/login'))
+    return () => setSessionExpiredHandler(null)
+  }, [router])
 
   useEffect(() => {
     let active = true
