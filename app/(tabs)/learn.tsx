@@ -46,24 +46,44 @@ export default function LearnScreen() {
   const cohortGroup = groups.find((g) => g.type === 'cohort') || null
 
   const getToken = async () => {
-    const token = await SecureStore.getItemAsync('token')
-    if (!token) {
+    try {
+      const token = await SecureStore.getItemAsync('token')
+      if (!token) {
+        router.replace('/login')
+        return null
+      }
+      return token
+    } catch {
       router.replace('/login')
       return null
     }
-    return token
   }
 
-  const loadGroupsAndUser = useCallback(async () => {
+  const loadGroupsAndUser = useCallback(async (): Promise<GroupItem[]> => {
     const token = await getToken()
-    if (!token) return
-    const raw = await SecureStore.getItemAsync('user')
-    if (raw) setUserId(JSON.parse(raw)?.id || null)
+    if (!token) return []
+
+    let raw: string | null = null
+    try {
+      raw = await SecureStore.getItemAsync('user')
+      if (raw) {
+        const parsed = JSON.parse(raw)
+        setUserId(parsed?.id || null)
+      } else {
+        setUserId(null)
+      }
+    } catch {
+      setUserId(null)
+    }
+
     try {
       const res = await api.get('/groups/mine', { headers: { Authorization: `Bearer ${token}` } })
-      setGroups(res.data.data || [])
+      const loadedGroups: GroupItem[] = res.data.data || []
+      setGroups(loadedGroups)
+      return loadedGroups
     } catch {
       // non-fatal — cohort tab just shows empty until this loads
+      return []
     }
   }, [])
 
@@ -94,7 +114,7 @@ export default function LearnScreen() {
   }, [])
 
   useEffect(() => {
-    loadGroupsAndUser().then(() => setLoading(false))
+    loadGroupsAndUser().finally(() => setLoading(false))
   }, [loadGroupsAndUser])
 
   useEffect(() => {
@@ -103,16 +123,24 @@ export default function LearnScreen() {
 
   async function onRefresh() {
     setRefreshing(true)
-    await loadGroupsAndUser()
-    await loadMaterials(activeTab, groups)
-    setRefreshing(false)
+    try {
+      const loadedGroups = await loadGroupsAndUser()
+      await loadMaterials(activeTab, loadedGroups)
+    } finally {
+      setRefreshing(false)
+    }
   }
 
   async function pickFile() {
-    const result = await DocumentPicker.getDocumentAsync({ type: '*/*', copyToCacheDirectory: true })
-    if (result.canceled) return
-    const file = result.assets[0]
-    setPickedFile({ uri: file.uri, name: file.name, mimeType: file.mimeType })
+    try {
+      const result = await DocumentPicker.getDocumentAsync({ type: '*/*', copyToCacheDirectory: true })
+      if (result.canceled) return
+      const file = result.assets[0]
+      if (!file) return
+      setPickedFile({ uri: file.uri, name: file.name, mimeType: file.mimeType })
+    } catch {
+      Alert.alert('File picker error', 'Could not choose this file.')
+    }
   }
 
   async function handleUpload() {
