@@ -33,6 +33,8 @@ export default function AdminDashboard() {
   const [title, setTitle] = useState('')
   const [body, setBody] = useState('')
   const [publishing, setPublishing] = useState(false)
+  const [auditLogs, setAuditLogs] = useState<any[]>([])
+  const [showAudit, setShowAudit] = useState(false)
   const [loading, setLoading] = useState(true)
   const [refreshing, setRefreshing] = useState(false)
 
@@ -68,6 +70,15 @@ export default function AdminDashboard() {
       setStats(overview.data.data || null)
     } catch (error: any) {
       if (error.response?.status !== 401) Alert.alert('Command Center', 'Could not load administrative statistics.')
+    }
+
+    try {
+      const audit = await api.get('/admin/audit', { headers })
+      setAuditLogs(audit.data.data || [])
+    } catch (error: any) {
+      if (error.response?.status !== 403 && error.response?.status !== 401) {
+        Alert.alert('Audit Log', 'Could not load recent administrative activity.')
+      }
     }
 
     if (['dpr', 'super_admin'].includes(parsed.role || '')) {
@@ -258,6 +269,28 @@ export default function AdminDashboard() {
         </View>
       )}
 
+      <View style={styles.section}>
+        <TouchableOpacity style={styles.auditToggle} onPress={() => setShowAudit(current => !current)}>
+          <View>
+            <Text style={styles.sectionTitle}>Audit Trail</Text>
+            <Text style={styles.sectionSubtitle}>Recent privileged administrative actions.</Text>
+          </View>
+          <Ionicons name={showAudit ? 'chevron-up' : 'chevron-down'} size={20} color={GREEN} />
+        </TouchableOpacity>
+        {showAudit && (auditLogs.length === 0 ? (
+          <Text style={styles.emptyText}>No recorded administrative actions yet.</Text>
+        ) : auditLogs.slice(0, 20).map((log: any) => (
+          <View key={String(log._id)} style={styles.auditRow}>
+            <View style={styles.auditIcon}><Ionicons name="shield-checkmark-outline" size={16} color={GREEN} /></View>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.auditAction}>{String(log.action || '').replaceAll('.', ' ')}</Text>
+              <Text style={styles.auditMeta}>{log.actor?.displayName || 'Staff'} · {log.actor?.role || 'staff'}</Text>
+              <Text style={styles.auditTime}>{log.createdAt ? new Date(log.createdAt).toLocaleString() : ''}</Text>
+            </View>
+          </View>
+        )))}
+      </View>
+
       <View style={styles.principle}>
         <Ionicons name="shield-checkmark-outline" size={22} color={GREEN} />
         <View style={{ flex: 1 }}>
@@ -321,6 +354,12 @@ const styles = StyleSheet.create({
   approveText: { color: '#fff', fontSize: 11, fontWeight: '800' },
   reject: { borderWidth: 1, borderColor: '#e4b7b2', borderRadius: 8, paddingHorizontal: 12, paddingVertical: 7 },
   rejectText: { color: '#b33a2f', fontSize: 11, fontWeight: '800' },
+  auditToggle: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingVertical: 2 },
+  auditRow: { flexDirection: 'row', borderTopWidth: 1, borderTopColor: '#f0f0f0', paddingTop: 12, marginTop: 12 },
+  auditIcon: { width: 32, height: 32, borderRadius: 16, backgroundColor: '#eaf5ee', alignItems: 'center', justifyContent: 'center', marginRight: 10 },
+  auditAction: { color: '#333', fontSize: 12, fontWeight: '800', textTransform: 'capitalize' },
+  auditMeta: { color: '#777', fontSize: 10, marginTop: 2 },
+  auditTime: { color: '#aaa', fontSize: 9, marginTop: 2 },
   principle: { backgroundColor: '#eef7f1', borderRadius: 14, padding: 15, flexDirection: 'row', gap: 10 },
   principleTitle: { color: '#245b38', fontWeight: '800', fontSize: 13 },
   principleText: { color: '#547060', fontSize: 11, lineHeight: 17, marginTop: 3 }
