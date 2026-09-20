@@ -17,13 +17,13 @@ const ITEMS = [
 export default function SideMenu({ visible, onClose }: { visible: boolean; onClose: () => void }) {
   const router = useRouter()
   const slideAnim = useRef(new Animated.Value(-WIDTH)).current
-  const [isHOD, setIsHOD] = useState(false)
+  const [role, setRole] = useState('')
 
   useEffect(() => {
     Animated.timing(slideAnim, { toValue: visible ? 0 : -WIDTH, duration: 250, useNativeDriver: true }).start()
     if (visible) {
       SecureStore.getItemAsync('user').then(raw => {
-        try { setIsHOD(JSON.parse(raw || '{}')?.role === 'hod') } catch { setIsHOD(false) }
+        try { setRole(JSON.parse(raw || '{}')?.role || '') } catch { setRole('') }
       })
     }
   }, [visible])
@@ -36,6 +36,8 @@ export default function SideMenu({ visible, onClose }: { visible: boolean; onClo
   }
 
   if (!visible) return null
+
+  const canManage = ['hod', 'dpr', 'super_admin'].includes(role)
 
   return (
     <Modal transparent visible={visible} animationType="none" onRequestClose={onClose}>
@@ -55,15 +57,28 @@ export default function SideMenu({ visible, onClose }: { visible: boolean; onClo
                 <Text style={styles.rowLabel}>{item.label}</Text>
               </TouchableOpacity>
             ))}
-            {isHOD && <TouchableOpacity
-              style={styles.row}
-              accessibilityRole="button"
-              accessibilityLabel="Timetable Publisher"
-              onPress={() => { onClose(); router.push('/hod/timetable' as any) }}
-            >
-              <Ionicons name="create-outline" size={20} color={GREEN} style={styles.rowIcon} />
-              <Text style={styles.rowLabel}>Timetable Publisher</Text>
-            </TouchableOpacity>}
+            {canManage && (
+              <TouchableOpacity
+                style={styles.row}
+                accessibilityRole="button"
+                accessibilityLabel="Command Center"
+                onPress={() => { onClose(); router.push('/admin' as any) }}
+              >
+                <Ionicons name="grid-outline" size={20} color={GREEN} style={styles.rowIcon} />
+                <Text style={styles.rowLabel}>Command Center</Text>
+              </TouchableOpacity>
+            )}
+            {role === 'hod' && (
+              <TouchableOpacity
+                style={styles.row}
+                accessibilityRole="button"
+                accessibilityLabel="Timetable Publisher"
+                onPress={() => { onClose(); router.push('/hod/timetable' as any) }}
+              >
+                <Ionicons name="create-outline" size={20} color={GREEN} style={styles.rowIcon} />
+                <Text style={styles.rowLabel}>Timetable Publisher</Text>
+              </TouchableOpacity>
+            )}
             <TouchableOpacity style={styles.row} onPress={handleLogout} accessibilityRole="button" accessibilityLabel="Log out">
               <Ionicons name="log-out-outline" size={20} color="#c0392b" style={styles.rowIcon} />
               <Text style={[styles.rowLabel, { color: '#c0392b' }]}>Log Out</Text>
