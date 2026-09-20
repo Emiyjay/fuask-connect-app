@@ -61,7 +61,7 @@ export default function ConversationsListScreen() {
         data={conversations}
         keyExtractor={(item, i) => item.userId || item._id || String(i)}
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} colors={[GREEN]} />}
-        ListEmptyComponent={<View style={styles.empty}><Ionicons name="chatbubbles-outline" size={42} color="#b8bec4" /><Text style={styles.emptyTitle}>Start your first conversation</Text><Text style={styles.emptyText}>Message a verified FUASK Connect user from your school community.</Text></View>}
+        ListEmptyComponent={<View style={styles.empty}><Ionicons name="chatbubbles-outline" size={42} color="#b8bec4" /><Text style={styles.emptyTitle} accessibilityRole="header">Start your first conversation</Text><Text style={styles.emptyText}>Message a verified FUASK Connect user from your school community.</Text></View>}
         renderItem={({ item }) => {
           const id = item.userId || item._id || ''
           const name = item.displayName || item.name || 'User'
@@ -72,12 +72,12 @@ export default function ConversationsListScreen() {
           </TouchableOpacity>
         }}
       />
-      <TouchableOpacity style={styles.fab} onPress={() => setComposerOpen(true)} accessibilityRole="button" accessibilityLabel="New message"><Ionicons name="create-outline" size={24} color="#fff" /></TouchableOpacity>
+      <TouchableOpacity style={styles.fab} onPress={() => setComposerOpen(true)} accessibilityRole="button" accessibilityLabel="New message" accessibilityHint="Opens a search to choose a verified FUASK Connect user"><Ionicons name="create-outline" size={24} color="#fff" /></TouchableOpacity>
       <Modal visible={composerOpen} animationType="slide" transparent onRequestClose={() => setComposerOpen(false)}>
         <View style={styles.modalBackdrop}><View style={styles.modalCard}>
-          <View style={styles.modalHeader}><Text style={styles.modalTitle}>New Message</Text><TouchableOpacity onPress={() => { setComposerOpen(false); setQuery(''); setUsers([]) }}><Ionicons name="close" size={24} color="#555" /></TouchableOpacity></View>
-          <TextInput style={styles.search} placeholder="Search name, matric number or department" value={query} onChangeText={setQuery} autoFocus />
-          {searching ? <ActivityIndicator color={GREEN} style={{ marginTop: 20 }} /> : <FlatList data={users} keyExtractor={u => u._id} keyboardShouldPersistTaps="handled" ListEmptyComponent={query.length >= 2 ? <Text style={styles.searchEmpty}>No verified user found.</Text> : <Text style={styles.searchHint}>Type at least 2 characters.</Text>} renderItem={({ item }) => <TouchableOpacity style={styles.userRow} onPress={() => { setComposerOpen(false); setQuery(''); setUsers([]); router.push(`/messages/${item._id}?name=${encodeURIComponent(item.displayName)}`) }}><View style={styles.avatarSmall}><Text style={styles.avatarText}>{item.displayName.slice(0, 2).toUpperCase()}</Text></View><View><Text style={styles.rowName}>{item.displayName}</Text><Text style={styles.rowPreview}>{item.department} · {item.role}</Text></View></TouchableOpacity>} />}
+          <View style={styles.modalHeader}><Text style={styles.modalTitle} accessibilityRole="header">New Message</Text><TouchableOpacity onPress={() => { setComposerOpen(false); setQuery(''); setUsers([]) }} accessibilityRole="button" accessibilityLabel="Close new message"><Ionicons name="close" size={24} color="#555" /></TouchableOpacity></View>
+          <TextInput style={styles.search} placeholder="Search name, matric number or department" placeholderTextColor="#888" value={query} onChangeText={setQuery} autoFocus accessibilityLabel="Search for a student to message" accessibilityHint="Enter at least two characters to search verified users" returnKeyType="search" autoCorrect={false} maxLength={80} />
+          {searching ? <ActivityIndicator color={GREEN} style={{ marginTop: 20 }} /> : <FlatList data={users} keyExtractor={u => u._id} keyboardShouldPersistTaps="handled" ListEmptyComponent={query.length >= 2 ? <Text style={styles.searchEmpty}>No verified user found.</Text> : <Text style={styles.searchHint}>Type at least 2 characters.</Text>} renderItem={({ item }) => <TouchableOpacity style={styles.userRow} onPress={() => { setComposerOpen(false); setQuery(''); setUsers([]); router.push(`/messages/${item._id}?name=${encodeURIComponent(item.displayName)}`) }} accessibilityRole="button" accessibilityLabel={"Message " + item.displayName} accessibilityHint="Opens an encrypted conversation"><View style={styles.avatarSmall}><Text style={styles.avatarText}>{item.displayName.slice(0, 2).toUpperCase()}</Text></View><View><Text style={styles.rowName}>{item.displayName}</Text><Text style={styles.rowPreview}>{item.department} · {item.role}</Text></View></TouchableOpacity>} />}
         </View></View>
       </Modal>
     </View>
