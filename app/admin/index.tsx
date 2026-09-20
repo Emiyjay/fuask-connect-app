@@ -168,12 +168,14 @@ export default function AdminDashboard() {
       )}
 
       <View style={styles.grid}>
-        <TouchableOpacity style={styles.card} onPress={() => router.push('/hod/timetable' as any)}>
-          <Ionicons name="calendar-outline" size={24} color={GREEN} />
-          <Text style={styles.cardTitle}>Timetable</Text>
-          <Text style={styles.cardText}>Publish classes, exams and official documents.</Text>
-          <Text style={styles.action}>Open Publisher →</Text>
-        </TouchableOpacity>
+        {role === 'hod' && (
+          <TouchableOpacity style={styles.card} onPress={() => router.push('/hod/timetable' as any)}>
+            <Ionicons name="calendar-outline" size={24} color={GREEN} />
+            <Text style={styles.cardTitle}>Timetable</Text>
+            <Text style={styles.cardText}>Publish classes, exams and official documents.</Text>
+            <Text style={styles.action}>Open Publisher →</Text>
+          </TouchableOpacity>
+        )}
 
         {['dpr', 'super_admin'].includes(role) && (
           <View style={styles.card}>
