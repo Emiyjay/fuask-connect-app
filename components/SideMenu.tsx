@@ -37,7 +37,7 @@ export default function SideMenu({ visible, onClose }: { visible: boolean; onClo
 
   if (!visible) return null
 
-  const canManage = ['hod', 'dpr', 'super_admin'].includes(role)
+  const canManage = ['hod', 'dpr', 'dean', 'super_admin'].includes(role)
 
   return (
     <Modal transparent visible={visible} animationType="none" onRequestClose={onClose}>
