@@ -68,6 +68,17 @@ export default function SideMenu({ visible, onClose }: { visible: boolean; onClo
                 <Text style={styles.rowLabel}>Command Center</Text>
               </TouchableOpacity>
             )}
+            {['hod', 'dean', 'super_admin'].includes(role) && (
+              <TouchableOpacity
+                style={styles.row}
+                accessibilityRole="button"
+                accessibilityLabel="Student Directory"
+                onPress={() => { onClose(); router.push('/admin/students' as any) }}
+              >
+                <Ionicons name="people-outline" size={20} color={GREEN} style={styles.rowIcon} />
+                <Text style={styles.rowLabel}>Student Directory</Text>
+              </TouchableOpacity>
+            )}
             {role === 'hod' && (
               <TouchableOpacity
                 style={styles.row}
