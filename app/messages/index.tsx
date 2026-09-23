@@ -36,11 +36,16 @@ export default function ConversationsListScreen() {
     } catch { Alert.alert('Error', 'Could not load your messages.') }
   }, [])
 
-  useEffect(() => { loadConversations().finally(() => setLoading(false)) }, [loadConversations])
-
   useFocusEffect(
     useCallback(() => {
-      loadConversations()
+      let active = true
+      setLoading(true)
+      loadConversations().finally(() => {
+        if (active) setLoading(false)
+      })
+      return () => {
+        active = false
+      }
     }, [loadConversations])
   )
 
