@@ -8,7 +8,7 @@ import { ensureKeysRegistered, getOrCreateKeyPair, getTheirPublicKey, encryptFor
 
 const GREEN = '#1a7a3c'
 type Message = { _id: string; senderId: string; receiverId: string; ciphertext: string; nonce: string; senderCiphertext?: string | null; senderNonce?: string | null; createdAt: string }
-type DisplayMessage = Message & { plainText: string }
+type DisplayMessage = Message & { plainText: string; decryptionFailed?: boolean }
 
 export default function ConversationScreen() {
   const { userId, name } = useLocalSearchParams<{ userId: string; name?: string }>()
@@ -22,6 +22,7 @@ export default function ConversationScreen() {
   const [sending, setSending] = useState(false)
   const [secureReady, setSecureReady] = useState(false)
   const [blocked, setBlocked] = useState(false)
+  const [blockLoading, setBlockLoading] = useState(false)
   const [actionsOpen, setActionsOpen] = useState(false)
   const [reportOpen, setReportOpen] = useState(false)
   const [reportMessage, setReportMessage] = useState<DisplayMessage | null>(null)
@@ -39,6 +40,13 @@ export default function ConversationScreen() {
     const token = await getToken(); if (!token || !userId) return
     const pair = await getOrCreateKeyPair()
     await ensureKeysRegistered(token)
+
+    try {
+      const blockRes = await api.get(`/messages/${userId}/block`, { headers: { Authorization: `Bearer ${token}` } })
+      setBlocked(Boolean(blockRes.data?.data?.blocked))
+    } catch {
+      // Block status is auxiliary; the conversation can still load.
+    }
     const theirPublicKey = await getTheirPublicKey(userId, token)
     if (!theirPublicKey) { setSecureReady(false); return }
     setSecureReady(true)
@@ -49,7 +57,11 @@ export default function ConversationScreen() {
       const cipher = mine ? message.senderCiphertext : message.ciphertext
       const nonce = mine ? message.senderNonce : message.nonce
       const plainText = cipher && nonce ? (mine ? decryptMessage(cipher, nonce, pair.publicKey, pair.secretKey) : decryptMessage(cipher, nonce, theirPublicKey, pair.secretKey)) : null
-      return { ...message, plainText: plainText || 'Secure message' }
+      return {
+        ...message,
+        plainText: plainText || 'Unable to decrypt this message on this device.',
+        decryptionFailed: !plainText
+      }
     }))
   }, [userId, myId])
 
@@ -62,24 +74,34 @@ export default function ConversationScreen() {
   useEffect(() => { if (myId) loadThread().catch(() => Alert.alert('Error', 'Could not load this conversation.')).finally(() => setLoading(false)) }, [loadThread, myId])
 
   async function handleBlock() {
-    if (!userId || blocked) return
+    if (!userId || blockLoading) return
     const token = await getToken(); if (!token) return
     setActionsOpen(false)
+    const action = blocked ? 'unblock' : 'block'
     Alert.alert(
-      'Block user?',
-      'You will not be able to send messages to this user while they are blocked.',
+      blocked ? 'Unblock user?' : 'Block user?',
+      blocked ? 'You will be able to send messages to this user again.' : 'You will not be able to send messages to this user while they are blocked.',
       [
         { text: 'Cancel', style: 'cancel' },
         {
-          text: 'Block',
-          style: 'destructive',
+          text: blocked ? 'Unblock' : 'Block',
+          style: blocked ? 'default' : 'destructive',
           onPress: async () => {
+            setBlockLoading(true)
             try {
-              await api.post(`/messages/${userId}/block`, {}, { headers: { Authorization: `Bearer ${token}` } })
-              setBlocked(true)
-              Alert.alert('User blocked', 'You can unblock this user later from the conversation actions.')
+              if (action === 'block') {
+                await api.post(`/messages/${userId}/block`, {}, { headers: { Authorization: `Bearer ${token}` } })
+                setBlocked(true)
+                Alert.alert('User blocked', 'Messages from this user will remain blocked until you unblock them.')
+              } else {
+                await api.delete(`/messages/${userId}/block`, { headers: { Authorization: `Bearer ${token}` } })
+                setBlocked(false)
+                Alert.alert('User unblocked', 'You can message this user again.')
+              }
             } catch (err: any) {
-              Alert.alert('Could not block', err?.response?.data?.error || 'Something went wrong.')
+              Alert.alert(action === 'block' ? 'Could not block' : 'Could not unblock', err?.response?.data?.error || 'Something went wrong.')
+            } finally {
+              setBlockLoading(false)
             }
           }
         }
@@ -142,7 +164,7 @@ export default function ConversationScreen() {
         </TouchableOpacity>
       ) }} />
       <View style={styles.securityBar} accessibilityRole="text" accessibilityLiveRegion="polite" accessibilityLabel={secureReady ? "End-to-end encrypted messaging is active" : "Secure messaging is unavailable"}><Ionicons name={secureReady ? 'lock-closed' : 'lock-open-outline'} size={14} color={secureReady ? GREEN : '#a66b00'} /><Text style={[styles.securityText, !secureReady && styles.securityWarning]}>{secureReady ? 'End-to-end encrypted' : 'Secure messaging unavailable'}</Text></View>
-      <FlatList ref={listRef} data={messages} accessibilityLabel="Conversation messages" keyExtractor={m => m._id} contentContainerStyle={styles.list} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={async () => { setRefreshing(true); try { await loadThread() } finally { setRefreshing(false) } }} colors={[GREEN]} />} onContentSizeChange={() => listRef.current?.scrollToEnd({ animated: false })} ListEmptyComponent={<Text style={styles.emptyText}>{secureReady ? 'No messages yet. Say hello.' : 'The recipient needs to enable secure messaging before you can chat.'}</Text>} renderItem={({ item }) => { const mine = item.senderId.toString() === myId; const time = new Date(item.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }); return <View style={[styles.bubble, mine ? styles.bubbleMine : styles.bubbleTheirs]} accessible accessibilityRole="text" accessibilityLabel={(mine ? "You" : (name || "Contact")) + " said: " + item.plainText + ". " + time}><Text style={[styles.bubbleText, mine && styles.bubbleTextMine]}>{item.plainText}</Text><View style={styles.bubbleFooter}><Text style={[styles.time, mine && styles.timeMine]}>{time}</Text>{!mine && <TouchableOpacity onPress={() => openReport(item)} accessibilityRole="button" accessibilityLabel="Report this message" accessibilityHint="Report this received message to an administrator"><Ionicons name="flag-outline" size={14} color="#888" /></TouchableOpacity>}</View></View> }} />
+      <FlatList ref={listRef} data={messages} accessibilityLabel="Conversation messages" keyExtractor={m => m._id} contentContainerStyle={styles.list} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={async () => { setRefreshing(true); try { await loadThread() } finally { setRefreshing(false) } }} colors={[GREEN]} />} onContentSizeChange={() => listRef.current?.scrollToEnd({ animated: false })} ListEmptyComponent={<Text style={styles.emptyText}>{secureReady ? 'No messages yet. Say hello.' : 'The recipient needs to enable secure messaging before you can chat.'}</Text>} renderItem={({ item }) => { const mine = item.senderId.toString() === myId; const time = new Date(item.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }); return <View style={[styles.bubble, mine ? styles.bubbleMine : styles.bubbleTheirs]} accessible accessibilityRole="text" accessibilityLabel={(mine ? "You" : (name || "Contact")) + " said: " + item.plainText + ". " + time}><Text style={[styles.bubbleText, mine && styles.bubbleTextMine, item.decryptionFailed && styles.decryptWarning]}>{item.plainText}</Text><View style={styles.bubbleFooter}><Text style={[styles.time, mine && styles.timeMine]}>{time}</Text>{!mine && <TouchableOpacity onPress={() => openReport(item)} accessibilityRole="button" accessibilityLabel="Report this message" accessibilityHint="Report this received message to an administrator"><Ionicons name="flag-outline" size={14} color="#888" /></TouchableOpacity>}</View></View> }} />
       <View style={styles.inputRow}><TextInput style={styles.input} placeholder={secureReady ? 'Message…' : 'Secure messaging unavailable'} placeholderTextColor="#888" value={text} onChangeText={setText} multiline editable={secureReady && !sending} maxLength={2000} accessibilityLabel="Message" accessibilityHint="Type your message. It will be end-to-end encrypted before sending." returnKeyType="default" /><TouchableOpacity onPress={handleSend} disabled={!secureReady || sending || !text.trim()} style={[styles.sendButton, (!secureReady || !text.trim()) && styles.sendDisabled]} accessibilityRole="button" accessibilityLabel="Send encrypted message" accessibilityHint="Sends the typed message securely" accessibilityState={{ disabled: !secureReady || sending || !text.trim() }}>{sending ? <ActivityIndicator size="small" color="#fff" /> : <Ionicons name="send" size={18} color="#fff" />}</TouchableOpacity></View>
       <Modal visible={actionsOpen} transparent animationType="fade" onRequestClose={() => setActionsOpen(false)}>
         <TouchableOpacity style={styles.modalBackdrop} activeOpacity={1} onPress={() => setActionsOpen(false)}>
@@ -150,7 +172,7 @@ export default function ConversationScreen() {
             <Text style={styles.modalTitle}>Conversation actions</Text>
             <TouchableOpacity style={styles.actionRow} onPress={handleBlock} disabled={blocked} accessibilityRole="button" accessibilityLabel={blocked ? 'User already blocked' : 'Block user'}>
               <Ionicons name="ban-outline" size={20} color="#b42318" />
-              <Text style={styles.dangerAction}>{blocked ? 'User blocked' : 'Block user'}</Text>
+              <Text style={blocked ? styles.actionText : styles.dangerAction}>{blockLoading ? 'Please wait…' : (blocked ? 'Unblock user' : 'Block user')}</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.actionRow} onPress={() => setActionsOpen(false)} accessibilityRole="button" accessibilityLabel="Cancel">
               <Ionicons name="close-outline" size={20} color="#555" />
@@ -182,7 +204,7 @@ export default function ConversationScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#f7f8fa' }, securityWarning: { color: '#8a5b00' }, centered: { flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: '#fff' },
+  container: { flex: 1, backgroundColor: '#f7f8fa' }, decryptWarning: { fontStyle: 'italic', color: '#8a5b00' }, securityWarning: { color: '#8a5b00' }, centered: { flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: '#fff' },
   securityBar: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 6, paddingVertical: 7, backgroundColor: '#eef7f1', borderBottomWidth: 1, borderBottomColor: '#dcebe0' }, securityText: { fontSize: 11, color: GREEN, fontWeight: '700' },
   list: { padding: 16, paddingBottom: 8 }, emptyText: { color: '#888', fontSize: 14, textAlign: 'center', marginTop: 40, paddingHorizontal: 25, lineHeight: 20 },
   bubble: { maxWidth: '78%', borderRadius: 16, paddingHorizontal: 14, paddingVertical: 9, marginBottom: 8 }, bubbleMine: { backgroundColor: GREEN, alignSelf: 'flex-end', borderBottomRightRadius: 4 }, bubbleTheirs: { backgroundColor: '#fff', alignSelf: 'flex-start', borderBottomLeftRadius: 4, borderWidth: 1, borderColor: '#eee' }, bubbleText: { fontSize: 14, color: '#333' }, bubbleTextMine: { color: '#fff' }, time: { fontSize: 9, color: '#8a8f94', marginTop: 4, alignSelf: 'flex-end' }, timeMine: { color: '#d8efdf' },
