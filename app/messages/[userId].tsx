@@ -170,7 +170,7 @@ export default function ConversationScreen() {
         <TouchableOpacity style={styles.modalBackdrop} activeOpacity={1} onPress={() => setActionsOpen(false)}>
           <View style={styles.actionCard}>
             <Text style={styles.modalTitle}>Conversation actions</Text>
-            <TouchableOpacity style={styles.actionRow} onPress={handleBlock} disabled={blocked} accessibilityRole="button" accessibilityLabel={blocked ? 'User already blocked' : 'Block user'}>
+            <TouchableOpacity style={styles.actionRow} onPress={handleBlock} disabled={blockLoading} accessibilityRole="button" accessibilityLabel={blocked ? 'Unblock user' : 'Block user'}>
               <Ionicons name="ban-outline" size={20} color="#b42318" />
               <Text style={blocked ? styles.actionText : styles.dangerAction}>{blockLoading ? 'Please wait…' : (blocked ? 'Unblock user' : 'Block user')}</Text>
             </TouchableOpacity>
