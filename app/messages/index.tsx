@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react'
+import { useFocusEffect } from '@react-navigation/native'
 import { View, Text, StyleSheet, FlatList, TouchableOpacity, ActivityIndicator, RefreshControl, Alert, Modal, TextInput } from 'react-native'
 import { useRouter } from 'expo-router'
 import * as SecureStore from 'expo-secure-store'
@@ -36,6 +37,12 @@ export default function ConversationsListScreen() {
   }, [])
 
   useEffect(() => { loadConversations().finally(() => setLoading(false)) }, [loadConversations])
+
+  useFocusEffect(
+    useCallback(() => {
+      loadConversations()
+    }, [loadConversations])
+  )
 
   useEffect(() => {
     const timer = setTimeout(async () => {
