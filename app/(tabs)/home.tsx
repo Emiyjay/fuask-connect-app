@@ -313,6 +313,8 @@ export default function HomeScreen() {
               </TouchableOpacity>
             </View>
             <TextInput
+              placeholderTextColor="#80998C"
+              selectionColor={GREEN}
               style={styles.composeInput}
               placeholder={scope === 'campus' ? 'Post a campus-wide announcement' : 'Share something with your cohort'}
               value={composeText}
@@ -363,6 +365,8 @@ export default function HomeScreen() {
             )}
             <View style={styles.commentInputRow}>
               <TextInput
+                placeholderTextColor="#80998C"
+                selectionColor={GREEN}
                 style={styles.commentInput}
                 placeholder="Write a comment..."
                 value={commentText}
@@ -388,11 +392,11 @@ const styles = StyleSheet.create({
   toggleButton: { flex: 1, paddingVertical: 8, borderRadius: 8, alignItems: 'center' },
   toggleButtonActive: { backgroundColor: GREEN },
   toggleText: { fontSize: 13, fontWeight: '600', color: '#B6CEC1' },
-  toggleTextActive: { color: '#fff' },
+  toggleTextActive: { color: '#07110E' },
   infoBanner: { fontSize: 12, color: '#80998C', textAlign: 'center', marginHorizontal: 20, marginBottom: 8 },
   feedList: { paddingHorizontal: 20, paddingBottom: 100 },
   emptyText: { color: '#80998C', fontSize: 14, textAlign: 'center', marginTop: 40 },
-  postCard: { backgroundColor: '#0D1B16', borderRadius: 12, padding: 14, marginBottom: 12, borderWidth: 1, borderColor: '#1F3A2E' },
+  postCard: { backgroundColor: '#0D1B16', borderRadius: 18, padding: 16, marginBottom: 14, borderWidth: 1, borderColor: '#1F3A2E' },
   pinnedRow: { flexDirection: 'row', alignItems: 'center', marginBottom: 6, gap: 4 },
   pinnedText: { fontSize: 11, color: GREEN, fontWeight: '700' },
   postHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 4 },
@@ -409,12 +413,12 @@ const styles = StyleSheet.create({
   modalCard: { backgroundColor: '#0D1B16', borderTopLeftRadius: 20, borderTopRightRadius: 20, padding: 20, maxHeight: '85%' },
   modalHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 },
   modalTitle: { fontSize: 18, fontWeight: '700', color: '#E8F5ED' },
-  composeInput: { borderWidth: 1, borderColor: '#2A4A3A', borderRadius: 8, padding: 12, minHeight: 90, textAlignVertical: 'top', fontSize: 14, marginBottom: 12 },
+  composeInput: { borderWidth: 1, borderColor: '#2A4A3A', borderRadius: 12, padding: 13, minHeight: 100, textAlignVertical: 'top', fontSize: 14, marginBottom: 12 },
   composeImagePreview: { width: 70, height: 70, borderRadius: 8, marginRight: 8 },
   attachButton: { flexDirection: 'row', alignItems: 'center', gap: 6, marginBottom: 16 },
   attachButtonText: { color: GREEN, fontSize: 13, fontWeight: '600' },
-  submitButton: { backgroundColor: GREEN, borderRadius: 8, padding: 14, alignItems: 'center', marginBottom: 10 },
-  submitButtonText: { color: '#fff', fontWeight: '700', fontSize: 15 },
+  submitButton: { backgroundColor: GREEN, borderRadius: 12, padding: 14, alignItems: 'center', marginBottom: 10 },
+  submitButtonText: { color: '#07110E', fontWeight: '700', fontSize: 15 },
   commentRow: { paddingVertical: 10, borderBottomWidth: 1, borderBottomColor: '#1F3A2E' },
   commentAuthor: { fontSize: 12, fontWeight: '700', color: '#E8F5ED', marginBottom: 2 },
   commentText: { fontSize: 13, color: '#D5E7DC' },
