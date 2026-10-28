@@ -11,7 +11,7 @@ import { useRouter } from 'expo-router'
 import api from '../../config/api'
 import SideMenu from '../../components/SideMenu'
 
-const GREEN = '#1a7a3c'
+const GREEN = '#38D39F'
 
 type GroupItem = { id: string; name: string; type: string; role?: string }
 
@@ -226,7 +226,7 @@ export default function HomeScreen() {
     <View style={styles.container}>
       <View style={styles.header}>
         <TouchableOpacity onPress={() => setMenuOpen(true)}>
-          <Ionicons name="menu-outline" size={26} color="#222" />
+          <Ionicons name="menu-outline" size={26} color="#E8F5ED" />
         </TouchableOpacity>
         <Text style={styles.appName}>FUASK Connect</Text>
         <View style={{ width: 26 }} />
@@ -287,7 +287,7 @@ export default function HomeScreen() {
                 <Text style={styles.actionText}>{item.likeCount}</Text>
               </TouchableOpacity>
               <TouchableOpacity style={styles.actionButton} onPress={() => openComments(item)}>
-                <Ionicons name="chatbubble-outline" size={17} color="#888" />
+                <Ionicons name="chatbubble-outline" size={17} color="#9BB7AA" />
                 <Text style={styles.actionText}>Comment</Text>
               </TouchableOpacity>
             </View>
@@ -309,7 +309,7 @@ export default function HomeScreen() {
             <View style={styles.modalHeader}>
               <Text style={styles.modalTitle}>New Post</Text>
               <TouchableOpacity onPress={() => setComposeVisible(false)}>
-                <Ionicons name="close" size={24} color="#666" />
+                <Ionicons name="close" size={24} color="#B6CEC1" />
               </TouchableOpacity>
             </View>
             <TextInput
@@ -343,7 +343,7 @@ export default function HomeScreen() {
             <View style={styles.modalHeader}>
               <Text style={styles.modalTitle}>Comments</Text>
               <TouchableOpacity onPress={() => setCommentsVisible(false)}>
-                <Ionicons name="close" size={24} color="#666" />
+                <Ionicons name="close" size={24} color="#B6CEC1" />
               </TouchableOpacity>
             </View>
             {commentsLoading ? (
@@ -380,44 +380,44 @@ export default function HomeScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#f7f8fa' },
-  centered: { flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: '#fff' },
+  container: { flex: 1, backgroundColor: '#07110E' },
+  centered: { flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: '#0D1B16' },
   header: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: 20, paddingTop: 20, paddingBottom: 12 },
   appName: { fontSize: 16, fontWeight: '700', color: GREEN },
-  toggleRow: { flexDirection: 'row', marginHorizontal: 20, backgroundColor: '#eee', borderRadius: 10, padding: 4, marginBottom: 8 },
+  toggleRow: { flexDirection: 'row', marginHorizontal: 20, backgroundColor: '#12271D', borderRadius: 10, padding: 4, marginBottom: 8 },
   toggleButton: { flex: 1, paddingVertical: 8, borderRadius: 8, alignItems: 'center' },
   toggleButtonActive: { backgroundColor: GREEN },
-  toggleText: { fontSize: 13, fontWeight: '600', color: '#666' },
+  toggleText: { fontSize: 13, fontWeight: '600', color: '#B6CEC1' },
   toggleTextActive: { color: '#fff' },
-  infoBanner: { fontSize: 12, color: '#999', textAlign: 'center', marginHorizontal: 20, marginBottom: 8 },
+  infoBanner: { fontSize: 12, color: '#80998C', textAlign: 'center', marginHorizontal: 20, marginBottom: 8 },
   feedList: { paddingHorizontal: 20, paddingBottom: 100 },
-  emptyText: { color: '#999', fontSize: 14, textAlign: 'center', marginTop: 40 },
-  postCard: { backgroundColor: '#fff', borderRadius: 12, padding: 14, marginBottom: 12, borderWidth: 1, borderColor: '#eee' },
+  emptyText: { color: '#80998C', fontSize: 14, textAlign: 'center', marginTop: 40 },
+  postCard: { backgroundColor: '#0D1B16', borderRadius: 12, padding: 14, marginBottom: 12, borderWidth: 1, borderColor: '#1F3A2E' },
   pinnedRow: { flexDirection: 'row', alignItems: 'center', marginBottom: 6, gap: 4 },
   pinnedText: { fontSize: 11, color: GREEN, fontWeight: '700' },
   postHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 4 },
-  postAuthor: { fontSize: 13, fontWeight: '700', color: '#222' },
+  postAuthor: { fontSize: 13, fontWeight: '700', color: '#E8F5ED' },
   messageIcon: { padding: 4 },
-  postContent: { fontSize: 14, color: '#333', lineHeight: 20, marginBottom: 8 },
+  postContent: { fontSize: 14, color: '#D5E7DC', lineHeight: 20, marginBottom: 8 },
   mediaRow: { marginBottom: 8 },
   mediaImage: { width: 140, height: 140, borderRadius: 8, marginRight: 8 },
   postActions: { flexDirection: 'row', gap: 20, marginTop: 4 },
   actionButton: { flexDirection: 'row', alignItems: 'center', gap: 4 },
-  actionText: { fontSize: 12, color: '#888' },
+  actionText: { fontSize: 12, color: '#9BB7AA' },
   fab: { position: 'absolute', bottom: 24, right: 24, width: 54, height: 54, borderRadius: 27, backgroundColor: GREEN, alignItems: 'center', justifyContent: 'center', elevation: 4 },
   modalOverlay: { flex: 1, backgroundColor: 'rgba(0,0,0,0.4)', justifyContent: 'flex-end' },
-  modalCard: { backgroundColor: '#fff', borderTopLeftRadius: 20, borderTopRightRadius: 20, padding: 20, maxHeight: '85%' },
+  modalCard: { backgroundColor: '#0D1B16', borderTopLeftRadius: 20, borderTopRightRadius: 20, padding: 20, maxHeight: '85%' },
   modalHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 },
-  modalTitle: { fontSize: 18, fontWeight: '700', color: '#222' },
-  composeInput: { borderWidth: 1, borderColor: '#ccc', borderRadius: 8, padding: 12, minHeight: 90, textAlignVertical: 'top', fontSize: 14, marginBottom: 12 },
+  modalTitle: { fontSize: 18, fontWeight: '700', color: '#E8F5ED' },
+  composeInput: { borderWidth: 1, borderColor: '#2A4A3A', borderRadius: 8, padding: 12, minHeight: 90, textAlignVertical: 'top', fontSize: 14, marginBottom: 12 },
   composeImagePreview: { width: 70, height: 70, borderRadius: 8, marginRight: 8 },
   attachButton: { flexDirection: 'row', alignItems: 'center', gap: 6, marginBottom: 16 },
   attachButtonText: { color: GREEN, fontSize: 13, fontWeight: '600' },
   submitButton: { backgroundColor: GREEN, borderRadius: 8, padding: 14, alignItems: 'center', marginBottom: 10 },
   submitButtonText: { color: '#fff', fontWeight: '700', fontSize: 15 },
-  commentRow: { paddingVertical: 10, borderBottomWidth: 1, borderBottomColor: '#f0f0f0' },
-  commentAuthor: { fontSize: 12, fontWeight: '700', color: '#222', marginBottom: 2 },
-  commentText: { fontSize: 13, color: '#444' },
-  commentInputRow: { flexDirection: 'row', alignItems: 'center', gap: 10, paddingTop: 12, borderTopWidth: 1, borderTopColor: '#eee' },
-  commentInput: { flex: 1, borderWidth: 1, borderColor: '#ccc', borderRadius: 20, paddingHorizontal: 14, paddingVertical: 8, fontSize: 14 }
+  commentRow: { paddingVertical: 10, borderBottomWidth: 1, borderBottomColor: '#1F3A2E' },
+  commentAuthor: { fontSize: 12, fontWeight: '700', color: '#E8F5ED', marginBottom: 2 },
+  commentText: { fontSize: 13, color: '#D5E7DC' },
+  commentInputRow: { flexDirection: 'row', alignItems: 'center', gap: 10, paddingTop: 12, borderTopWidth: 1, borderTopColor: '#1F3A2E' },
+  commentInput: { flex: 1, borderWidth: 1, borderColor: '#2A4A3A', borderRadius: 20, paddingHorizontal: 14, paddingVertical: 8, fontSize: 14 }
 })
