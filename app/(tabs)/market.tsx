@@ -6,7 +6,7 @@ import { Ionicons } from '@expo/vector-icons'
 import { useRouter } from 'expo-router'
 import api from '../../config/api'
 
-const GREEN = '#1a7a3c'
+const GREEN = '#38D39F'
 
 type Business = {
   _id: string
@@ -254,7 +254,7 @@ export default function MarketScreen() {
                 <Text style={styles.modalSubtitle}>Free listing • Admin verified</Text>
               </View>
               <TouchableOpacity onPress={() => setModalVisible(false)} accessibilityLabel="Close business form">
-                <Ionicons name="close" size={24} color="#666" />
+                <Ionicons name="close" size={24} color="#B6CEC1" />
               </TouchableOpacity>
             </View>
 
@@ -264,7 +264,7 @@ export default function MarketScreen() {
                   <Image source={{ uri: imageUri }} style={styles.imagePreview} />
                 ) : (
                   <>
-                    <Ionicons name="camera-outline" size={24} color="#999" />
+                    <Ionicons name="camera-outline" size={24} color="#80998C" />
                     <Text style={styles.imagePickerText}>Add business photo</Text>
                   </>
                 )}
@@ -329,40 +329,40 @@ export default function MarketScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#f7f8fa' },
-  centered: { flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: '#fff' },
+  container: { flex: 1, backgroundColor: '#07110E' },
+  centered: { flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: '#0D1B16' },
   header: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', padding: 20, paddingBottom: 12 },
-  title: { fontSize: 20, fontWeight: '700', color: '#222' },
-  subtitle: { fontSize: 11, color: '#888', marginTop: 2 },
+  title: { fontSize: 20, fontWeight: '700', color: '#E8F5ED' },
+  subtitle: { fontSize: 11, color: '#9BB7AA', marginTop: 2 },
   addButton: { flexDirection: 'row', alignItems: 'center', backgroundColor: GREEN, borderRadius: 20, paddingHorizontal: 12, paddingVertical: 8, gap: 4 },
   addButtonText: { color: '#fff', fontWeight: '600', fontSize: 12 },
   list: { paddingHorizontal: 20, paddingBottom: 40 },
-  emptyText: { color: '#999', fontSize: 14, textAlign: 'center', marginTop: 60, paddingHorizontal: 30 },
-  card: { flexDirection: 'row', backgroundColor: '#fff', borderRadius: 12, padding: 12, marginBottom: 10, borderWidth: 1, borderColor: '#eee' },
+  emptyText: { color: '#80998C', fontSize: 14, textAlign: 'center', marginTop: 60, paddingHorizontal: 30 },
+  card: { flexDirection: 'row', backgroundColor: '#0D1B16', borderRadius: 12, padding: 12, marginBottom: 10, borderWidth: 1, borderColor: '#1F3A2E' },
   featuredCard: { borderColor: '#d9c27a' },
   cardImage: { width: 68, height: 68, borderRadius: 8, marginRight: 12 },
   cardImagePlaceholder: { backgroundColor: '#f0f0f0', alignItems: 'center', justifyContent: 'center' },
   cardMain: { flex: 1, justifyContent: 'center' },
   titleRow: { flexDirection: 'row', alignItems: 'center', gap: 5 },
-  cardTitle: { flex: 1, fontSize: 15, fontWeight: '600', color: '#222' },
+  cardTitle: { flex: 1, fontSize: 15, fontWeight: '600', color: '#E8F5ED' },
   featuredBadge: { alignSelf: 'flex-start', flexDirection: 'row', alignItems: 'center', gap: 3, backgroundColor: '#fff5cf', borderRadius: 8, paddingHorizontal: 6, paddingVertical: 2, marginTop: 4 },
   featuredText: { fontSize: 10, color: '#8a6200', fontWeight: '700' },
   cardCategory: { fontSize: 11, color: GREEN, fontWeight: '600', marginTop: 3 },
-  cardDescription: { fontSize: 12, color: '#888', marginTop: 4 },
+  cardDescription: { fontSize: 12, color: '#9BB7AA', marginTop: 4 },
   metaRow: { flexDirection: 'row', alignItems: 'center', gap: 4, marginTop: 5 },
   metaText: { flex: 1, fontSize: 11, color: '#777' },
   actionsRow: { flexDirection: 'row', gap: 8, marginTop: 8 },
   contactButton: { flexDirection: 'row', alignItems: 'center', gap: 4, borderWidth: 1, borderColor: '#dfe8e2', borderRadius: 14, paddingHorizontal: 9, paddingVertical: 5 },
   contactText: { color: GREEN, fontSize: 11, fontWeight: '600' },
   modalOverlay: { flex: 1, backgroundColor: 'rgba(0,0,0,0.4)', justifyContent: 'flex-end' },
-  modalCard: { backgroundColor: '#fff', borderTopLeftRadius: 20, borderTopRightRadius: 20, padding: 20, maxHeight: '90%' },
+  modalCard: { backgroundColor: '#0D1B16', borderTopLeftRadius: 20, borderTopRightRadius: 20, padding: 20, maxHeight: '90%' },
   modalHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 },
-  modalTitle: { fontSize: 18, fontWeight: '700', color: '#222' },
-  modalSubtitle: { fontSize: 11, color: '#888', marginTop: 2 },
+  modalTitle: { fontSize: 18, fontWeight: '700', color: '#E8F5ED' },
+  modalSubtitle: { fontSize: 11, color: '#9BB7AA', marginTop: 2 },
   imagePicker: { height: 120, borderRadius: 12, borderWidth: 1, borderColor: '#ddd', borderStyle: 'dashed', alignItems: 'center', justifyContent: 'center', marginBottom: 16, overflow: 'hidden' },
-  imagePickerText: { color: '#999', fontSize: 13, marginTop: 6 },
+  imagePickerText: { color: '#80998C', fontSize: 13, marginTop: 6 },
   imagePreview: { width: '100%', height: '100%' },
-  input: { borderWidth: 1, borderColor: '#ccc', borderRadius: 8, padding: 12, marginBottom: 12, fontSize: 14 },
+  input: { borderWidth: 1, borderColor: '#2A4A3A', borderRadius: 8, padding: 12, marginBottom: 12, fontSize: 14 },
   textArea: { height: 90, textAlignVertical: 'top' },
   submitButton: { backgroundColor: GREEN, borderRadius: 8, padding: 14, alignItems: 'center', marginTop: 4, marginBottom: 20 },
   submitButtonText: { color: '#fff', fontWeight: '700', fontSize: 15 }
