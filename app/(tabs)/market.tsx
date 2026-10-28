@@ -271,6 +271,8 @@ export default function MarketScreen() {
               </TouchableOpacity>
 
               <TextInput
+                placeholderTextColor="#80998C"
+                selectionColor={GREEN}
                 style={styles.input}
                 placeholder="Business name"
                 value={name}
@@ -278,6 +280,8 @@ export default function MarketScreen() {
                 maxLength={80}
               />
               <TextInput
+                placeholderTextColor="#80998C"
+                selectionColor={GREEN}
                 style={styles.input}
                 placeholder="Category (Food, Fashion, Services...)"
                 value={category}
@@ -285,6 +289,8 @@ export default function MarketScreen() {
                 maxLength={40}
               />
               <TextInput
+                placeholderTextColor="#80998C"
+                selectionColor={GREEN}
                 style={styles.input}
                 placeholder="Campus location / address"
                 value={location}
@@ -292,6 +298,8 @@ export default function MarketScreen() {
                 maxLength={160}
               />
               <TextInput
+                placeholderTextColor="#80998C"
+                selectionColor={GREEN}
                 style={styles.input}
                 placeholder="Phone number"
                 value={contactPhone}
@@ -300,6 +308,8 @@ export default function MarketScreen() {
                 maxLength={30}
               />
               <TextInput
+                placeholderTextColor="#80998C"
+                selectionColor={GREEN}
                 style={styles.input}
                 placeholder="WhatsApp number (optional)"
                 value={contactWhatsapp}
@@ -308,6 +318,8 @@ export default function MarketScreen() {
                 maxLength={30}
               />
               <TextInput
+                placeholderTextColor="#80998C"
+                selectionColor={GREEN}
                 style={[styles.input, styles.textArea]}
                 placeholder="What do you sell or provide?"
                 value={description}
@@ -334,14 +346,14 @@ const styles = StyleSheet.create({
   header: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', padding: 20, paddingBottom: 12 },
   title: { fontSize: 20, fontWeight: '700', color: '#E8F5ED' },
   subtitle: { fontSize: 11, color: '#9BB7AA', marginTop: 2 },
-  addButton: { flexDirection: 'row', alignItems: 'center', backgroundColor: GREEN, borderRadius: 20, paddingHorizontal: 12, paddingVertical: 8, gap: 4 },
-  addButtonText: { color: '#fff', fontWeight: '600', fontSize: 12 },
+  addButton: { flexDirection: 'row', alignItems: 'center', backgroundColor: GREEN, borderRadius: 14, paddingHorizontal: 12, paddingVertical: 8, gap: 4 },
+  addButtonText: { color: '#07110E', fontWeight: '700', fontSize: 12 },
   list: { paddingHorizontal: 20, paddingBottom: 40 },
   emptyText: { color: '#80998C', fontSize: 14, textAlign: 'center', marginTop: 60, paddingHorizontal: 30 },
-  card: { flexDirection: 'row', backgroundColor: '#0D1B16', borderRadius: 12, padding: 12, marginBottom: 10, borderWidth: 1, borderColor: '#1F3A2E' },
+  card: { flexDirection: 'row', backgroundColor: '#0D1B16', borderRadius: 16, padding: 13, marginBottom: 12, borderWidth: 1, borderColor: '#1F3A2E' },
   featuredCard: { borderColor: '#d9c27a' },
   cardImage: { width: 68, height: 68, borderRadius: 8, marginRight: 12 },
-  cardImagePlaceholder: { backgroundColor: '#f0f0f0', alignItems: 'center', justifyContent: 'center' },
+  cardImagePlaceholder: { backgroundColor: '#12271D', alignItems: 'center', justifyContent: 'center' },
   cardMain: { flex: 1, justifyContent: 'center' },
   titleRow: { flexDirection: 'row', alignItems: 'center', gap: 5 },
   cardTitle: { flex: 1, fontSize: 15, fontWeight: '600', color: '#E8F5ED' },
@@ -350,20 +362,20 @@ const styles = StyleSheet.create({
   cardCategory: { fontSize: 11, color: GREEN, fontWeight: '600', marginTop: 3 },
   cardDescription: { fontSize: 12, color: '#9BB7AA', marginTop: 4 },
   metaRow: { flexDirection: 'row', alignItems: 'center', gap: 4, marginTop: 5 },
-  metaText: { flex: 1, fontSize: 11, color: '#777' },
+  metaText: { flex: 1, fontSize: 11, color: '#9BB7AA' },
   actionsRow: { flexDirection: 'row', gap: 8, marginTop: 8 },
-  contactButton: { flexDirection: 'row', alignItems: 'center', gap: 4, borderWidth: 1, borderColor: '#dfe8e2', borderRadius: 14, paddingHorizontal: 9, paddingVertical: 5 },
+  contactButton: { flexDirection: 'row', alignItems: 'center', gap: 4, borderWidth: 1, borderColor: '#2A4A3A', borderRadius: 14, paddingHorizontal: 9, paddingVertical: 5 },
   contactText: { color: GREEN, fontSize: 11, fontWeight: '600' },
   modalOverlay: { flex: 1, backgroundColor: 'rgba(0,0,0,0.4)', justifyContent: 'flex-end' },
   modalCard: { backgroundColor: '#0D1B16', borderTopLeftRadius: 20, borderTopRightRadius: 20, padding: 20, maxHeight: '90%' },
   modalHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 },
   modalTitle: { fontSize: 18, fontWeight: '700', color: '#E8F5ED' },
   modalSubtitle: { fontSize: 11, color: '#9BB7AA', marginTop: 2 },
-  imagePicker: { height: 120, borderRadius: 12, borderWidth: 1, borderColor: '#ddd', borderStyle: 'dashed', alignItems: 'center', justifyContent: 'center', marginBottom: 16, overflow: 'hidden' },
+  imagePicker: { height: 120, borderRadius: 12, borderWidth: 1, borderColor: '#2A4A3A', borderStyle: 'dashed', alignItems: 'center', justifyContent: 'center', marginBottom: 16, overflow: 'hidden' },
   imagePickerText: { color: '#80998C', fontSize: 13, marginTop: 6 },
   imagePreview: { width: '100%', height: '100%' },
-  input: { borderWidth: 1, borderColor: '#2A4A3A', borderRadius: 8, padding: 12, marginBottom: 12, fontSize: 14 },
+  input: { borderWidth: 1, borderColor: '#2A4A3A', borderRadius: 12, padding: 13, marginBottom: 12, fontSize: 14, color: '#E8F5ED', backgroundColor: '#091610' },
   textArea: { height: 90, textAlignVertical: 'top' },
-  submitButton: { backgroundColor: GREEN, borderRadius: 8, padding: 14, alignItems: 'center', marginTop: 4, marginBottom: 20 },
-  submitButtonText: { color: '#fff', fontWeight: '700', fontSize: 15 }
+  submitButton: { backgroundColor: GREEN, borderRadius: 12, padding: 14, alignItems: 'center', marginTop: 4, marginBottom: 20 },
+  submitButtonText: { color: '#07110E', fontWeight: '700', fontSize: 15 }
 })
