@@ -154,12 +154,12 @@ const styles = StyleSheet.create({
   title: { fontSize: 22, fontWeight: '700', color: '#E8F5ED', marginBottom: 20 },
   sectionTitle: { fontSize: 14, fontWeight: '700', color: '#9BB7AA', textTransform: 'uppercase', letterSpacing: 0.5, marginBottom: 10, marginTop: 16 },
   emptyText: { color: '#80998C', fontSize: 14, fontStyle: 'italic' },
-  card: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', backgroundColor: '#0D1B16', borderRadius: 12, padding: 16, marginBottom: 10, borderWidth: 1, borderColor: '#1F3A2E' },
+  card: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', backgroundColor: '#0D1B16', borderRadius: 16, padding: 17, marginBottom: 12, borderWidth: 1, borderColor: '#1F3A2E' },
   cardMain: { flex: 1 },
   cardTitle: { fontSize: 15, fontWeight: '600', color: '#E8F5ED', marginBottom: 2 },
   cardSubtitle: { fontSize: 12, color: '#80998C', textTransform: 'capitalize' },
   adminBadge: { backgroundColor: GREEN, paddingHorizontal: 10, paddingVertical: 4, borderRadius: 12 },
   adminBadgeText: { color: '#fff', fontSize: 11, fontWeight: '700' },
   joinButton: { backgroundColor: GREEN, paddingHorizontal: 16, paddingVertical: 8, borderRadius: 16 },
-  joinButtonText: { color: '#fff', fontSize: 12, fontWeight: '700' }
+  joinButtonText: { color: '#07110E', fontSize: 12, fontWeight: '700' }
 })
