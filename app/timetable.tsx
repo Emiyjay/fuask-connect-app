@@ -122,7 +122,7 @@ export default function TimetableScreen() {
         <Text style={styles.sectionTitle}>{selectedDay}</Text>
         {dayClasses.length === 0 ? (
           <View style={styles.emptyCard}>
-            <Ionicons name="calendar-clear-outline" size={28} color="#aaa" />
+            <Ionicons name="calendar-clear-outline" size={28} color="#80998C" />
             <Text style={styles.emptyTitle}>No classes scheduled</Text>
             <Text style={styles.emptyText}>There are no timetable entries for {selectedDay}.</Text>
           </View>
@@ -137,7 +137,7 @@ export default function TimetableScreen() {
               <Text style={styles.courseCode}>{entry.courseCode}</Text>
               <Text style={styles.courseTitle}>{entry.courseTitle}</Text>
               <View style={styles.metaRow}>
-                <Ionicons name="location-outline" size={15} color="#777" />
+                <Ionicons name="location-outline" size={15} color="#9BB7AA" />
                 <Text style={styles.metaText}>{entry.venue}</Text>
               </View>
               {!!entry.lecturerName && (
@@ -205,7 +205,7 @@ const styles = StyleSheet.create({
   classCard: { flexDirection: 'row', backgroundColor: '#0D1B16', borderRadius: 14, padding: 14, marginBottom: 10, borderWidth: 1, borderColor: '#1F3A2E' },
   timeColumn: { width: 70, borderRightWidth: 1, borderRightColor: '#1F3A2E', marginRight: 14, justifyContent: 'center' },
   time: { fontSize: 12, fontWeight: '700', color: GREEN },
-  timeDivider: { color: '#bbb', fontSize: 10, marginVertical: 2 },
+  timeDivider: { color: '#80998C', fontSize: 10, marginVertical: 2 },
   classMain: { flex: 1 },
   courseCode: { fontSize: 14, fontWeight: '800', color: GREEN },
   courseTitle: { fontSize: 14, fontWeight: '600', color: '#D5E7DC', marginTop: 3, marginBottom: 8 },
