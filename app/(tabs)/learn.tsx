@@ -9,7 +9,7 @@ import { Ionicons } from '@expo/vector-icons'
 import { useRouter } from 'expo-router'
 import api from '../../config/api'
 
-const GREEN = '#1a7a3c'
+const GREEN = '#38D39F'
 
 type Material = {
   _id: string
@@ -197,11 +197,22 @@ export default function LearnScreen() {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.title}>Learn</Text>
+        <View style={styles.headerCopy}>
+          <Text style={styles.title}>Learning Hub</Text>
+          <Text style={styles.subtitle}>Study resources, shared by your campus</Text>
+        </View>
         <TouchableOpacity style={styles.uploadButton} onPress={() => setUploadVisible(true)}>
           <Ionicons name="add" size={18} color="#fff" />
           <Text style={styles.uploadButtonText}>Upload</Text>
         </TouchableOpacity>
+      </View>
+
+      <View style={styles.learningBanner}>
+        <View style={styles.learningBannerIcon}><Ionicons name="book" size={23} color="#07110E" /></View>
+        <View style={styles.learningBannerCopy}>
+          <Text style={styles.learningBannerTitle}>Learn together</Text>
+          <Text style={styles.learningBannerText}>Find course materials or share a resource with your cohort.</Text>
+        </View>
       </View>
 
       <View style={styles.tabRow}>
@@ -251,7 +262,7 @@ export default function LearnScreen() {
             <View style={styles.modalHeader}>
               <Text style={styles.modalTitle}>Upload Material</Text>
               <TouchableOpacity onPress={() => setUploadVisible(false)}>
-                <Ionicons name="close" size={24} color="#666" />
+                <Ionicons name="close" size={24} color="#B6CEC1" />
               </TouchableOpacity>
             </View>
             <ScrollView>
@@ -306,41 +317,48 @@ export default function LearnScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#f7f8fa' },
-  centered: { flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: '#fff' },
+  container: { flex: 1, backgroundColor: '#07110E' },
+  centered: { flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: '#0D1B16' },
   header: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', padding: 20, paddingBottom: 12 },
-  title: { fontSize: 20, fontWeight: '700', color: '#222' },
-  uploadButton: { flexDirection: 'row', alignItems: 'center', backgroundColor: GREEN, borderRadius: 20, paddingHorizontal: 14, paddingVertical: 8, gap: 4 },
-  uploadButtonText: { color: '#fff', fontWeight: '600', fontSize: 13 },
-  tabRow: { flexDirection: 'row', marginHorizontal: 20, backgroundColor: '#eee', borderRadius: 10, padding: 4, marginBottom: 8 },
+  headerCopy: { flex: 1, paddingRight: 8 },
+  title: { fontSize: 23, fontWeight: '800', color: '#E8F5ED', letterSpacing: -0.5 },
+  subtitle: { fontSize: 11, color: '#9BB7AA', marginTop: 4 },
+  learningBanner: { flexDirection: 'row', alignItems: 'center', marginHorizontal: 20, marginTop: 2, marginBottom: 18, padding: 16, borderRadius: 18, backgroundColor: '#0E3A2C', borderWidth: 1, borderColor: '#23634A' },
+  learningBannerIcon: { width: 46, height: 46, borderRadius: 15, backgroundColor: GREEN, alignItems: 'center', justifyContent: 'center', marginRight: 12 },
+  learningBannerCopy: { flex: 1 },
+  learningBannerTitle: { fontSize: 14, fontWeight: '800', color: '#F2FFF8', marginBottom: 4 },
+  learningBannerText: { fontSize: 11, lineHeight: 16, color: '#C2E5D5' },
+  uploadButton: { flexDirection: 'row', alignItems: 'center', backgroundColor: GREEN, borderRadius: 14, paddingHorizontal: 14, paddingVertical: 8, gap: 4 },
+  uploadButtonText: { color: '#07110E', fontWeight: '700', fontSize: 13 },
+  tabRow: { flexDirection: 'row', marginHorizontal: 20, backgroundColor: '#12271D', borderRadius: 10, padding: 4, marginBottom: 8 },
   tabButton: { flex: 1, paddingVertical: 8, borderRadius: 8, alignItems: 'center' },
   tabButtonActive: { backgroundColor: GREEN },
-  tabText: { fontSize: 12, fontWeight: '600', color: '#666' },
-  tabTextActive: { color: '#fff' },
-  infoBanner: { fontSize: 12, color: '#999', textAlign: 'center', marginHorizontal: 20, marginBottom: 8 },
+  tabText: { fontSize: 12, fontWeight: '600', color: '#B6CEC1' },
+  tabTextActive: { color: '#07110E' },
+  infoBanner: { fontSize: 12, color: '#80998C', textAlign: 'center', marginHorizontal: 20, marginBottom: 8 },
   list: { paddingHorizontal: 20, paddingBottom: 40 },
-  emptyText: { color: '#999', fontSize: 14, textAlign: 'center', marginTop: 60 },
-  card: { flexDirection: 'row', alignItems: 'center', backgroundColor: '#fff', borderRadius: 12, padding: 14, marginBottom: 10, borderWidth: 1, borderColor: '#eee' },
+  emptyText: { color: '#80998C', fontSize: 14, textAlign: 'center', marginTop: 60 },
+  card: { flexDirection: 'row', alignItems: 'center', backgroundColor: '#0D1B16', borderRadius: 16, padding: 15, marginBottom: 12, borderWidth: 1, borderColor: '#1F3A2E' },
   cardIcon: { marginRight: 12 },
   cardMain: { flex: 1 },
-  cardTitle: { fontSize: 14, fontWeight: '600', color: '#222' },
-  cardSubtitle: { fontSize: 12, color: '#999', marginTop: 2 },
+  cardTitle: { fontSize: 14, fontWeight: '600', color: '#E8F5ED' },
+  cardSubtitle: { fontSize: 12, color: '#80998C', marginTop: 2 },
   iconButton: { padding: 6, marginLeft: 4 },
   modalOverlay: { flex: 1, backgroundColor: 'rgba(0,0,0,0.4)', justifyContent: 'flex-end' },
-  modalCard: { backgroundColor: '#fff', borderTopLeftRadius: 20, borderTopRightRadius: 20, padding: 20, maxHeight: '85%' },
+  modalCard: { backgroundColor: '#0D1B16', borderTopLeftRadius: 20, borderTopRightRadius: 20, padding: 20, maxHeight: '85%' },
   modalHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 },
-  modalTitle: { fontSize: 18, fontWeight: '700', color: '#222' },
-  filePicker: { flexDirection: 'row', alignItems: 'center', borderWidth: 1, borderColor: '#ddd', borderStyle: 'dashed', borderRadius: 10, padding: 14, marginBottom: 14, gap: 8 },
-  filePickerText: { flex: 1, fontSize: 13, color: '#555' },
-  input: { borderWidth: 1, borderColor: '#ccc', borderRadius: 8, padding: 12, marginBottom: 12, fontSize: 14 },
-  scopeLabel: { fontSize: 13, fontWeight: '600', color: '#333', marginBottom: 8 },
+  modalTitle: { fontSize: 18, fontWeight: '700', color: '#E8F5ED' },
+  filePicker: { flexDirection: 'row', alignItems: 'center', borderWidth: 1, borderColor: '#2A4A3A', borderStyle: 'dashed', borderRadius: 10, padding: 14, marginBottom: 14, gap: 8 },
+  filePickerText: { flex: 1, fontSize: 13, color: '#D5E7DC' },
+  input: { borderWidth: 1, borderColor: '#2A4A3A', borderRadius: 12, padding: 13, marginBottom: 12, fontSize: 14, color: '#E8F5ED', backgroundColor: '#091610' },
+  scopeLabel: { fontSize: 13, fontWeight: '600', color: '#D5E7DC', marginBottom: 8 },
   scopeRow: { flexDirection: 'row', gap: 8, marginBottom: 8 },
-  scopeChip: { flex: 1, borderWidth: 1, borderColor: '#ccc', borderRadius: 20, paddingVertical: 8, alignItems: 'center' },
+  scopeChip: { flex: 1, borderWidth: 1, borderColor: '#2A4A3A', borderRadius: 20, paddingVertical: 8, alignItems: 'center' },
   scopeChipActive: { backgroundColor: GREEN, borderColor: GREEN },
   scopeChipDisabled: { opacity: 0.4 },
-  scopeChipText: { fontSize: 12, fontWeight: '600', color: '#555' },
-  scopeChipTextActive: { color: '#fff' },
-  scopeHint: { fontSize: 11, color: '#999', marginBottom: 16 },
-  submitButton: { backgroundColor: GREEN, borderRadius: 8, padding: 14, alignItems: 'center', marginTop: 4, marginBottom: 20 },
-  submitButtonText: { color: '#fff', fontWeight: '700', fontSize: 15 }
+  scopeChipText: { fontSize: 12, fontWeight: '600', color: '#D5E7DC' },
+  scopeChipTextActive: { color: '#07110E' },
+  scopeHint: { fontSize: 11, color: '#80998C', marginBottom: 16 },
+  submitButton: { backgroundColor: GREEN, borderRadius: 12, padding: 14, alignItems: 'center', marginTop: 4, marginBottom: 20 },
+  submitButtonText: { color: '#07110E', fontWeight: '700', fontSize: 15 }
 })

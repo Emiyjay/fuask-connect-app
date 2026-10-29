@@ -6,7 +6,7 @@ import { Ionicons } from '@expo/vector-icons'
 import { useRouter } from 'expo-router'
 import api from '../../config/api'
 
-const GREEN = '#1a7a3c'
+const GREEN = '#38D39F'
 
 type Business = {
   _id: string
@@ -173,9 +173,9 @@ export default function MarketScreen() {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <View>
-          <Text style={styles.title}>Marketplace</Text>
-          <Text style={styles.subtitle}>Verified campus businesses</Text>
+        <View style={styles.headerCopy}>
+          <Text style={styles.title}>Campus Marketplace</Text>
+          <Text style={styles.subtitle}>Discover student businesses and services</Text>
         </View>
         <TouchableOpacity
           style={styles.addButton}
@@ -190,6 +190,16 @@ export default function MarketScreen() {
 
       <FlatList
         data={businesses}
+        ListHeaderComponent={
+          <View style={styles.marketBanner}>
+            <View style={styles.marketBannerCopy}>
+              <Text style={styles.marketEyebrow}>SHOP CAMPUS</Text>
+              <Text style={styles.marketBannerTitle}>Good things start here.</Text>
+              <Text style={styles.marketBannerText}>Support local student businesses and find services around FUASK.</Text>
+            </View>
+            <View style={styles.marketBannerIcon}><Ionicons name="storefront" size={24} color="#07110E" /></View>
+          </View>
+        }
         keyExtractor={(item) => item._id}
         contentContainerStyle={styles.list}
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} colors={[GREEN]} />}
@@ -254,7 +264,7 @@ export default function MarketScreen() {
                 <Text style={styles.modalSubtitle}>Free listing • Admin verified</Text>
               </View>
               <TouchableOpacity onPress={() => setModalVisible(false)} accessibilityLabel="Close business form">
-                <Ionicons name="close" size={24} color="#666" />
+                <Ionicons name="close" size={24} color="#B6CEC1" />
               </TouchableOpacity>
             </View>
 
@@ -264,13 +274,15 @@ export default function MarketScreen() {
                   <Image source={{ uri: imageUri }} style={styles.imagePreview} />
                 ) : (
                   <>
-                    <Ionicons name="camera-outline" size={24} color="#999" />
+                    <Ionicons name="camera-outline" size={24} color="#80998C" />
                     <Text style={styles.imagePickerText}>Add business photo</Text>
                   </>
                 )}
               </TouchableOpacity>
 
               <TextInput
+                placeholderTextColor="#80998C"
+                selectionColor={GREEN}
                 style={styles.input}
                 placeholder="Business name"
                 value={name}
@@ -278,6 +290,8 @@ export default function MarketScreen() {
                 maxLength={80}
               />
               <TextInput
+                placeholderTextColor="#80998C"
+                selectionColor={GREEN}
                 style={styles.input}
                 placeholder="Category (Food, Fashion, Services...)"
                 value={category}
@@ -285,6 +299,8 @@ export default function MarketScreen() {
                 maxLength={40}
               />
               <TextInput
+                placeholderTextColor="#80998C"
+                selectionColor={GREEN}
                 style={styles.input}
                 placeholder="Campus location / address"
                 value={location}
@@ -292,6 +308,8 @@ export default function MarketScreen() {
                 maxLength={160}
               />
               <TextInput
+                placeholderTextColor="#80998C"
+                selectionColor={GREEN}
                 style={styles.input}
                 placeholder="Phone number"
                 value={contactPhone}
@@ -300,6 +318,8 @@ export default function MarketScreen() {
                 maxLength={30}
               />
               <TextInput
+                placeholderTextColor="#80998C"
+                selectionColor={GREEN}
                 style={styles.input}
                 placeholder="WhatsApp number (optional)"
                 value={contactWhatsapp}
@@ -308,6 +328,8 @@ export default function MarketScreen() {
                 maxLength={30}
               />
               <TextInput
+                placeholderTextColor="#80998C"
+                selectionColor={GREEN}
                 style={[styles.input, styles.textArea]}
                 placeholder="What do you sell or provide?"
                 value={description}
@@ -329,41 +351,48 @@ export default function MarketScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#f7f8fa' },
-  centered: { flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: '#fff' },
+  container: { flex: 1, backgroundColor: '#07110E' },
+  centered: { flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: '#0D1B16' },
   header: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', padding: 20, paddingBottom: 12 },
-  title: { fontSize: 20, fontWeight: '700', color: '#222' },
-  subtitle: { fontSize: 11, color: '#888', marginTop: 2 },
-  addButton: { flexDirection: 'row', alignItems: 'center', backgroundColor: GREEN, borderRadius: 20, paddingHorizontal: 12, paddingVertical: 8, gap: 4 },
-  addButtonText: { color: '#fff', fontWeight: '600', fontSize: 12 },
+  headerCopy: { flex: 1, paddingRight: 8 },
+  title: { fontSize: 22, fontWeight: '800', color: '#E8F5ED', letterSpacing: -0.5 },
+  subtitle: { fontSize: 11, color: '#9BB7AA', marginTop: 2 },
+  addButton: { flexDirection: 'row', alignItems: 'center', backgroundColor: GREEN, borderRadius: 14, paddingHorizontal: 12, paddingVertical: 8, gap: 4 },
+  addButtonText: { color: '#07110E', fontWeight: '700', fontSize: 12 },
   list: { paddingHorizontal: 20, paddingBottom: 40 },
-  emptyText: { color: '#999', fontSize: 14, textAlign: 'center', marginTop: 60, paddingHorizontal: 30 },
-  card: { flexDirection: 'row', backgroundColor: '#fff', borderRadius: 12, padding: 12, marginBottom: 10, borderWidth: 1, borderColor: '#eee' },
+  marketBanner: { flexDirection: 'row', alignItems: 'center', marginBottom: 18, padding: 17, borderRadius: 18, backgroundColor: '#0E3A2C', borderWidth: 1, borderColor: '#23634A' },
+  marketBannerCopy: { flex: 1, paddingRight: 8 },
+  marketEyebrow: { color: '#8BE7C3', fontSize: 9, fontWeight: '800', letterSpacing: 1.1, marginBottom: 7 },
+  marketBannerTitle: { color: '#F2FFF8', fontSize: 17, fontWeight: '800', marginBottom: 5 },
+  marketBannerText: { color: '#C2E5D5', fontSize: 11, lineHeight: 16 },
+  marketBannerIcon: { width: 48, height: 48, borderRadius: 16, backgroundColor: GREEN, alignItems: 'center', justifyContent: 'center' },
+  emptyText: { color: '#80998C', fontSize: 14, textAlign: 'center', marginTop: 60, paddingHorizontal: 30 },
+  card: { flexDirection: 'row', backgroundColor: '#0D1B16', borderRadius: 16, padding: 13, marginBottom: 12, borderWidth: 1, borderColor: '#1F3A2E' },
   featuredCard: { borderColor: '#d9c27a' },
   cardImage: { width: 68, height: 68, borderRadius: 8, marginRight: 12 },
-  cardImagePlaceholder: { backgroundColor: '#f0f0f0', alignItems: 'center', justifyContent: 'center' },
+  cardImagePlaceholder: { backgroundColor: '#12271D', alignItems: 'center', justifyContent: 'center' },
   cardMain: { flex: 1, justifyContent: 'center' },
   titleRow: { flexDirection: 'row', alignItems: 'center', gap: 5 },
-  cardTitle: { flex: 1, fontSize: 15, fontWeight: '600', color: '#222' },
+  cardTitle: { flex: 1, fontSize: 15, fontWeight: '600', color: '#E8F5ED' },
   featuredBadge: { alignSelf: 'flex-start', flexDirection: 'row', alignItems: 'center', gap: 3, backgroundColor: '#fff5cf', borderRadius: 8, paddingHorizontal: 6, paddingVertical: 2, marginTop: 4 },
   featuredText: { fontSize: 10, color: '#8a6200', fontWeight: '700' },
   cardCategory: { fontSize: 11, color: GREEN, fontWeight: '600', marginTop: 3 },
-  cardDescription: { fontSize: 12, color: '#888', marginTop: 4 },
+  cardDescription: { fontSize: 12, color: '#9BB7AA', marginTop: 4 },
   metaRow: { flexDirection: 'row', alignItems: 'center', gap: 4, marginTop: 5 },
-  metaText: { flex: 1, fontSize: 11, color: '#777' },
+  metaText: { flex: 1, fontSize: 11, color: '#9BB7AA' },
   actionsRow: { flexDirection: 'row', gap: 8, marginTop: 8 },
-  contactButton: { flexDirection: 'row', alignItems: 'center', gap: 4, borderWidth: 1, borderColor: '#dfe8e2', borderRadius: 14, paddingHorizontal: 9, paddingVertical: 5 },
+  contactButton: { flexDirection: 'row', alignItems: 'center', gap: 4, borderWidth: 1, borderColor: '#2A4A3A', borderRadius: 14, paddingHorizontal: 9, paddingVertical: 5 },
   contactText: { color: GREEN, fontSize: 11, fontWeight: '600' },
   modalOverlay: { flex: 1, backgroundColor: 'rgba(0,0,0,0.4)', justifyContent: 'flex-end' },
-  modalCard: { backgroundColor: '#fff', borderTopLeftRadius: 20, borderTopRightRadius: 20, padding: 20, maxHeight: '90%' },
+  modalCard: { backgroundColor: '#0D1B16', borderTopLeftRadius: 20, borderTopRightRadius: 20, padding: 20, maxHeight: '90%' },
   modalHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 },
-  modalTitle: { fontSize: 18, fontWeight: '700', color: '#222' },
-  modalSubtitle: { fontSize: 11, color: '#888', marginTop: 2 },
-  imagePicker: { height: 120, borderRadius: 12, borderWidth: 1, borderColor: '#ddd', borderStyle: 'dashed', alignItems: 'center', justifyContent: 'center', marginBottom: 16, overflow: 'hidden' },
-  imagePickerText: { color: '#999', fontSize: 13, marginTop: 6 },
+  modalTitle: { fontSize: 18, fontWeight: '700', color: '#E8F5ED' },
+  modalSubtitle: { fontSize: 11, color: '#9BB7AA', marginTop: 2 },
+  imagePicker: { height: 120, borderRadius: 12, borderWidth: 1, borderColor: '#2A4A3A', borderStyle: 'dashed', alignItems: 'center', justifyContent: 'center', marginBottom: 16, overflow: 'hidden' },
+  imagePickerText: { color: '#80998C', fontSize: 13, marginTop: 6 },
   imagePreview: { width: '100%', height: '100%' },
-  input: { borderWidth: 1, borderColor: '#ccc', borderRadius: 8, padding: 12, marginBottom: 12, fontSize: 14 },
+  input: { borderWidth: 1, borderColor: '#2A4A3A', borderRadius: 12, padding: 13, marginBottom: 12, fontSize: 14, color: '#E8F5ED', backgroundColor: '#091610' },
   textArea: { height: 90, textAlignVertical: 'top' },
-  submitButton: { backgroundColor: GREEN, borderRadius: 8, padding: 14, alignItems: 'center', marginTop: 4, marginBottom: 20 },
-  submitButtonText: { color: '#fff', fontWeight: '700', fontSize: 15 }
+  submitButton: { backgroundColor: GREEN, borderRadius: 12, padding: 14, alignItems: 'center', marginTop: 4, marginBottom: 20 },
+  submitButtonText: { color: '#07110E', fontWeight: '700', fontSize: 15 }
 })

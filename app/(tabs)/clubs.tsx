@@ -1,10 +1,11 @@
 import { useState, useEffect, useCallback } from 'react'
 import { View, Text, StyleSheet, FlatList, TouchableOpacity, ActivityIndicator, RefreshControl, Alert } from 'react-native'
+import { Ionicons } from '@expo/vector-icons'
 import * as SecureStore from 'expo-secure-store'
 import { useRouter } from 'expo-router'
 import api from '../../config/api'
 
-const GREEN = '#1a7a3c'
+const GREEN = '#38D39F'
 
 type ClubItem = {
   id: string
@@ -93,7 +94,17 @@ export default function ClubsScreen() {
       renderItem={null}
       ListHeaderComponent={
         <>
-          <Text style={styles.title}>Clubs & Societies</Text>
+          <View style={styles.pageIntro}>
+            <Text style={styles.title}>Clubs & Societies</Text>
+            <Text style={styles.pageSubtitle}>Find your people. Build something together.</Text>
+            <View style={styles.clubsBanner}>
+              <View style={styles.clubsBannerIcon}><Ionicons name="people" size={24} color="#07110E" /></View>
+              <View style={styles.clubsBannerCopy}>
+                <Text style={styles.clubsBannerTitle}>Get involved on campus</Text>
+                <Text style={styles.clubsBannerText}>Explore student communities and join the ones that match your interests.</Text>
+              </View>
+            </View>
+          </View>
 
           <Text style={styles.sectionTitle}>My Clubs</Text>
           {myClubs.length === 0 ? (
@@ -148,18 +159,25 @@ export default function ClubsScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#f7f8fa' },
-  centered: { flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: '#fff' },
+  container: { flex: 1, backgroundColor: '#07110E' },
+  centered: { flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: '#0D1B16' },
   content: { padding: 20, paddingBottom: 60 },
-  title: { fontSize: 22, fontWeight: '700', color: '#222', marginBottom: 20 },
-  sectionTitle: { fontSize: 14, fontWeight: '700', color: '#888', textTransform: 'uppercase', letterSpacing: 0.5, marginBottom: 10, marginTop: 16 },
-  emptyText: { color: '#999', fontSize: 14, fontStyle: 'italic' },
-  card: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', backgroundColor: '#fff', borderRadius: 12, padding: 16, marginBottom: 10, borderWidth: 1, borderColor: '#eee' },
+  pageIntro: { marginBottom: 8 },
+  title: { fontSize: 23, fontWeight: '800', color: '#E8F5ED', marginBottom: 5, letterSpacing: -0.5 },
+  pageSubtitle: { fontSize: 11, color: '#9BB7AA', marginBottom: 16 },
+  clubsBanner: { flexDirection: 'row', alignItems: 'center', padding: 16, borderRadius: 18, backgroundColor: '#0E3A2C', borderWidth: 1, borderColor: '#23634A' , marginBottom: 8},
+  clubsBannerIcon: { width: 46, height: 46, borderRadius: 15, backgroundColor: GREEN, alignItems: 'center', justifyContent: 'center', marginRight: 12 },
+  clubsBannerCopy: { flex: 1 },
+  clubsBannerTitle: { color: '#F2FFF8', fontSize: 14, fontWeight: '800', marginBottom: 4 },
+  clubsBannerText: { color: '#C2E5D5', fontSize: 11, lineHeight: 16 },
+  sectionTitle: { fontSize: 14, fontWeight: '700', color: '#9BB7AA', textTransform: 'uppercase', letterSpacing: 0.5, marginBottom: 10, marginTop: 16 },
+  emptyText: { color: '#80998C', fontSize: 14, fontStyle: 'italic' },
+  card: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', backgroundColor: '#0D1B16', borderRadius: 16, padding: 17, marginBottom: 12, borderWidth: 1, borderColor: '#1F3A2E' },
   cardMain: { flex: 1 },
-  cardTitle: { fontSize: 15, fontWeight: '600', color: '#222', marginBottom: 2 },
-  cardSubtitle: { fontSize: 12, color: '#999', textTransform: 'capitalize' },
+  cardTitle: { fontSize: 15, fontWeight: '600', color: '#E8F5ED', marginBottom: 2 },
+  cardSubtitle: { fontSize: 12, color: '#80998C', textTransform: 'capitalize' },
   adminBadge: { backgroundColor: GREEN, paddingHorizontal: 10, paddingVertical: 4, borderRadius: 12 },
   adminBadgeText: { color: '#fff', fontSize: 11, fontWeight: '700' },
   joinButton: { backgroundColor: GREEN, paddingHorizontal: 16, paddingVertical: 8, borderRadius: 16 },
-  joinButtonText: { color: '#fff', fontSize: 12, fontWeight: '700' }
+  joinButtonText: { color: '#07110E', fontSize: 12, fontWeight: '700' }
 })

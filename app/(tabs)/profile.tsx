@@ -5,7 +5,7 @@ import * as SecureStore from 'expo-secure-store'
 import { Ionicons } from '@expo/vector-icons'
 import api from '../../config/api'
 
-const GREEN = '#1a7a3c'
+const GREEN = '#38D39F'
 const HIERARCHY_ORDER = ['school', 'faculty', 'department', 'cohort']
 
 type UserData = {
@@ -76,18 +76,24 @@ export default function ProfileScreen() {
 
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.content}>
-      <View style={styles.avatarCircle}>
+      <View style={styles.profileHeading}>
+        <Text style={styles.profileTitle}>Your Profile</Text>
+        <Text style={styles.profileSubtitle}>Your identity in the FUASK community</Text>
+      </View>
+      <View style={styles.identityPanel}>
+        <View style={styles.avatarCircle}>
         <Text style={styles.avatarText}>{initials}</Text>
       </View>
-      <Text style={styles.name}>{user?.displayName || 'Loading…'}</Text>
+        <Text style={styles.name}>{user?.displayName || 'Loading…'}</Text>
 
-      {user && (
+        {user && (
         <View style={styles.badgeRow}>
           <View style={styles.badge}><Text style={styles.badgeText}>{user.department}</Text></View>
           <View style={styles.badge}><Text style={styles.badgeText}>{user.level}</Text></View>
           <View style={[styles.badge, styles.badgeRole]}><Text style={[styles.badgeText, styles.badgeRoleText]}>{user.role}</Text></View>
         </View>
-      )}
+        )}
+      </View>
 
       {academicChain.length > 0 && (
         <View style={styles.breadcrumbCard}>
@@ -125,25 +131,29 @@ export default function ProfileScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#f7f8fa' },
-  content: { padding: 20, alignItems: 'center', paddingBottom: 60 },
-  avatarCircle: { width: 84, height: 84, borderRadius: 42, backgroundColor: GREEN, alignItems: 'center', justifyContent: 'center', marginTop: 12, marginBottom: 14 },
-  avatarText: { color: '#fff', fontSize: 28, fontWeight: '700' },
-  name: { fontSize: 20, fontWeight: '700', color: '#222', marginBottom: 10 },
+  container: { flex: 1, backgroundColor: '#07110E' },
+  content: { padding: 20, paddingBottom: 60 },
+  profileHeading: { width: '100%', marginBottom: 18 },
+  profileTitle: { fontSize: 23, fontWeight: '800', color: '#E8F5ED', letterSpacing: -0.5 },
+  profileSubtitle: { fontSize: 11, color: '#9BB7AA', marginTop: 4 },
+  identityPanel: { width: '100%', alignItems: 'center', padding: 20, borderRadius: 20, backgroundColor: '#0E3A2C', borderWidth: 1, borderColor: '#23634A', marginBottom: 20 },
+  avatarCircle: { width: 84, height: 84, borderRadius: 42, backgroundColor: GREEN, alignItems: 'center', justifyContent: 'center', marginTop: 2, marginBottom: 14 },
+  avatarText: { color: '#07110E', fontSize: 28, fontWeight: '700' },
+  name: { fontSize: 20, fontWeight: '700', color: '#E8F5ED', marginBottom: 10 },
   badgeRow: { flexDirection: 'row', gap: 8, marginBottom: 20 },
-  badge: { backgroundColor: '#eaf5ee', paddingHorizontal: 12, paddingVertical: 5, borderRadius: 12 },
-  badgeText: { fontSize: 12, fontWeight: '600', color: GREEN, textTransform: 'capitalize' },
+  badge: { backgroundColor: '#12271D', paddingHorizontal: 12, paddingVertical: 5, borderRadius: 12 },
+  badgeText: { fontSize: 12, fontWeight: '600', color: '#D5E7DC', textTransform: 'capitalize' },
   badgeRole: { backgroundColor: GREEN },
-  badgeRoleText: { color: '#fff' },
-  breadcrumbCard: { width: '100%', backgroundColor: '#fff', borderRadius: 12, padding: 14, borderWidth: 1, borderColor: '#eee', marginBottom: 20 },
+  badgeRoleText: { color: '#07110E' },
+  breadcrumbCard: { width: '100%', backgroundColor: '#0D1B16', borderRadius: 12, padding: 14, borderWidth: 1, borderColor: '#1F3A2E', marginBottom: 20 },
   breadcrumbRow: { alignItems: 'center' },
-  breadcrumbText: { fontSize: 13, color: '#555', fontWeight: '600', textAlign: 'center' },
+  breadcrumbText: { fontSize: 13, color: '#B6CEC1', fontWeight: '600', textAlign: 'center' },
   breadcrumbArrow: { marginVertical: 2 },
-  settingsCard: { width: '100%', backgroundColor: '#fff', borderRadius: 12, borderWidth: 1, borderColor: '#eee', marginBottom: 20 },
-  settingsRow: { flexDirection: 'row', alignItems: 'center', padding: 16, borderBottomWidth: 1, borderBottomColor: '#f0f0f0' },
+  settingsCard: { width: '100%', backgroundColor: '#0D1B16', borderRadius: 12, borderWidth: 1, borderColor: '#1F3A2E', marginBottom: 20 },
+  settingsRow: { flexDirection: 'row', alignItems: 'center', padding: 16, borderBottomWidth: 1, borderBottomColor: '#1F3A2E' },
   settingsRowLast: { borderBottomWidth: 0 },
   settingsIcon: { marginRight: 14 },
-  settingsLabel: { flex: 1, fontSize: 15, color: '#333' },
-  logoutRow: { flexDirection: 'row', alignItems: 'center', width: '100%', backgroundColor: '#fff', borderRadius: 12, borderWidth: 1, borderColor: '#eee', padding: 16 },
+  settingsLabel: { flex: 1, fontSize: 15, color: '#D5E7DC' },
+  logoutRow: { flexDirection: 'row', alignItems: 'center', width: '100%', backgroundColor: '#0D1B16', borderRadius: 12, borderWidth: 1, borderColor: '#1F3A2E', padding: 16 },
   logoutText: { fontSize: 15, color: '#c0392b', fontWeight: '600' }
 })
