@@ -5,7 +5,7 @@ import * as SecureStore from 'expo-secure-store'
 import { Ionicons } from '@expo/vector-icons'
 import api from '../config/api'
 
-const GREEN = '#1a7a3c'
+const GREEN = '#38D39F'
 const DAYS = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
 
 type ClassEntry = {
@@ -188,39 +188,39 @@ export default function TimetableScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#f7f8fa' },
-  centered: { flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: '#fff' },
+  container: { flex: 1, backgroundColor: '#07110E' },
+  centered: { flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: '#0D1B16' },
   content: { padding: 20, paddingBottom: 40 },
-  hero: { flexDirection: 'row', alignItems: 'center', backgroundColor: '#fff', borderRadius: 16, padding: 16, borderWidth: 1, borderColor: '#e8e8e8', marginBottom: 16 },
+  hero: { flexDirection: 'row', alignItems: 'center', backgroundColor: '#0D1B16', borderRadius: 16, padding: 16, borderWidth: 1, borderColor: '#1F3A2E', marginBottom: 16 },
   heroIcon: { width: 48, height: 48, borderRadius: 14, backgroundColor: GREEN, alignItems: 'center', justifyContent: 'center', marginRight: 12 },
   heroCopy: { flex: 1 },
-  title: { fontSize: 21, fontWeight: '800', color: '#202020' },
-  subtitle: { fontSize: 13, color: '#777', marginTop: 3 },
+  title: { fontSize: 21, fontWeight: '800', color: '#E8F5ED' },
+  subtitle: { fontSize: 13, color: '#9BB7AA', marginTop: 3 },
   dayRow: { gap: 8, paddingBottom: 8 },
-  dayButton: { minWidth: 58, paddingVertical: 10, paddingHorizontal: 12, borderRadius: 12, backgroundColor: '#fff', borderWidth: 1, borderColor: '#e5e5e5', alignItems: 'center' },
+  dayButton: { minWidth: 58, paddingVertical: 10, paddingHorizontal: 12, borderRadius: 12, backgroundColor: '#0D1B16', borderWidth: 1, borderColor: '#1F3A2E', alignItems: 'center' },
   dayButtonActive: { backgroundColor: GREEN, borderColor: GREEN },
-  dayText: { fontSize: 13, fontWeight: '700', color: '#666' },
+  dayText: { fontSize: 13, fontWeight: '700', color: '#B6CEC1' },
   dayTextActive: { color: '#fff' },
-  sectionTitle: { fontSize: 17, fontWeight: '800', color: '#222', marginTop: 18, marginBottom: 10 },
-  classCard: { flexDirection: 'row', backgroundColor: '#fff', borderRadius: 14, padding: 14, marginBottom: 10, borderWidth: 1, borderColor: '#e8e8e8' },
-  timeColumn: { width: 70, borderRightWidth: 1, borderRightColor: '#eee', marginRight: 14, justifyContent: 'center' },
+  sectionTitle: { fontSize: 17, fontWeight: '800', color: '#E8F5ED', marginTop: 18, marginBottom: 10 },
+  classCard: { flexDirection: 'row', backgroundColor: '#0D1B16', borderRadius: 14, padding: 14, marginBottom: 10, borderWidth: 1, borderColor: '#1F3A2E' },
+  timeColumn: { width: 70, borderRightWidth: 1, borderRightColor: '#1F3A2E', marginRight: 14, justifyContent: 'center' },
   time: { fontSize: 12, fontWeight: '700', color: GREEN },
   timeDivider: { color: '#bbb', fontSize: 10, marginVertical: 2 },
   classMain: { flex: 1 },
   courseCode: { fontSize: 14, fontWeight: '800', color: GREEN },
-  courseTitle: { fontSize: 14, fontWeight: '600', color: '#333', marginTop: 3, marginBottom: 8 },
+  courseTitle: { fontSize: 14, fontWeight: '600', color: '#D5E7DC', marginTop: 3, marginBottom: 8 },
   metaRow: { flexDirection: 'row', alignItems: 'center', marginTop: 4, gap: 6 },
-  metaText: { flex: 1, fontSize: 12, color: '#777' },
-  emptyCard: { backgroundColor: '#fff', borderRadius: 14, padding: 24, alignItems: 'center', borderWidth: 1, borderColor: '#e8e8e8' },
-  emptyTitle: { fontSize: 15, fontWeight: '700', color: '#444', marginTop: 8 },
-  emptyText: { fontSize: 12, color: '#888', textAlign: 'center', marginTop: 5, lineHeight: 18 },
-  examCard: { backgroundColor: '#fff', borderRadius: 14, padding: 14, marginBottom: 10, borderWidth: 1, borderColor: '#e8e8e8' },
+  metaText: { flex: 1, fontSize: 12, color: '#9BB7AA' },
+  emptyCard: { backgroundColor: '#0D1B16', borderRadius: 14, padding: 24, alignItems: 'center', borderWidth: 1, borderColor: '#1F3A2E' },
+  emptyTitle: { fontSize: 15, fontWeight: '700', color: '#D5E7DC', marginTop: 8 },
+  emptyText: { fontSize: 12, color: '#80998C', textAlign: 'center', marginTop: 5, lineHeight: 18 },
+  examCard: { backgroundColor: '#0D1B16', borderRadius: 14, padding: 14, marginBottom: 10, borderWidth: 1, borderColor: '#1F3A2E' },
   examTop: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
-  urgency: { backgroundColor: '#eaf5ee', borderRadius: 20, paddingHorizontal: 9, paddingVertical: 4 },
-  urgencyRed: { backgroundColor: '#fdecea' },
-  urgencyYellow: { backgroundColor: '#fff5d9' },
-  urgencyText: { fontSize: 10, fontWeight: '800', color: '#555' },
-  documentButton: { flexDirection: 'row', alignItems: 'center', gap: 10, backgroundColor: '#fff', borderRadius: 14, padding: 14, marginTop: 8, borderWidth: 1, borderColor: '#dcebe1' },
-  documentTitle: { fontSize: 14, fontWeight: '700', color: '#333' },
-  documentText: { fontSize: 11, color: '#888', marginTop: 3 }
+  urgency: { backgroundColor: '#123C2D', borderRadius: 20, paddingHorizontal: 9, paddingVertical: 4 },
+  urgencyRed: { backgroundColor: '#3A211F' },
+  urgencyYellow: { backgroundColor: '#3B3218' },
+  urgencyText: { fontSize: 10, fontWeight: '800', color: '#B6CEC1' },
+  documentButton: { flexDirection: 'row', alignItems: 'center', gap: 10, backgroundColor: '#0D1B16', borderRadius: 14, padding: 14, marginTop: 8, borderWidth: 1, borderColor: '#23634A' },
+  documentTitle: { fontSize: 14, fontWeight: '700', color: '#D5E7DC' },
+  documentText: { fontSize: 11, color: '#80998C', marginTop: 3 }
 })
