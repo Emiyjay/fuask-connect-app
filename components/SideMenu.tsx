@@ -3,16 +3,10 @@ import { View, Text, StyleSheet, TouchableOpacity, Animated, Dimensions, Modal }
 import { useRouter } from 'expo-router'
 import * as SecureStore from 'expo-secure-store'
 import { Ionicons } from '@expo/vector-icons'
+import { MORE_FEATURES } from '../config/campusFeatures'
 
-const GREEN = '#1a7a3c'
+const GREEN = '#38D39F'
 const WIDTH = Dimensions.get('window').width * 0.78
-
-const ITEMS = [
-  { key: 'timetable', label: 'Timetable', icon: 'calendar-outline', route: '/timetable' },
-  { key: 'lostfound', label: 'Lost & Found', icon: 'search-outline', route: '/lostfound' },
-  { key: 'messages', label: 'Messages', icon: 'chatbubble-outline', route: '/messages' },
-  { key: 'about', label: 'About FUASK Connect', icon: 'information-circle-outline', route: '/about' },
-] as const
 
 export default function SideMenu({ visible, onClose }: { visible: boolean; onClose: () => void }) {
   const router = useRouter()
@@ -45,7 +39,7 @@ export default function SideMenu({ visible, onClose }: { visible: boolean; onClo
         <Animated.View style={[styles.panel, { transform: [{ translateX: slideAnim }] }]}>
           <TouchableOpacity activeOpacity={1}>
             <Text style={styles.panelTitle}>FUASK Connect</Text>
-            {ITEMS.map((item) => (
+            {MORE_FEATURES.map((item) => (
               <TouchableOpacity
                 key={item.key}
                 style={styles.row}
@@ -102,10 +96,10 @@ export default function SideMenu({ visible, onClose }: { visible: boolean; onClo
 }
 
 const styles = StyleSheet.create({
-  backdrop: { flex: 1, backgroundColor: 'rgba(0,0,0,0.4)', flexDirection: 'row' },
-  panel: { width: WIDTH, height: '100%', backgroundColor: '#fff', paddingTop: 60, paddingHorizontal: 20 },
-  panelTitle: { fontSize: 18, fontWeight: '700', color: GREEN, marginBottom: 24 },
-  row: { flexDirection: 'row', alignItems: 'center', paddingVertical: 14, borderBottomWidth: 1, borderBottomColor: '#f0f0f0' },
+  backdrop: { flex: 1, backgroundColor: 'rgba(0,0,0,0.68)', flexDirection: 'row' },
+  panel: { width: WIDTH, height: '100%', backgroundColor: '#0D1B16', borderRightWidth: 1, borderRightColor: '#1F3A2E', paddingTop: 60, paddingHorizontal: 20 },
+  panelTitle: { fontSize: 18, fontWeight: '700', color: '#E8F5ED', marginBottom: 24 },
+  row: { flexDirection: 'row', alignItems: 'center', paddingVertical: 14, borderBottomWidth: 1, borderBottomColor: '#1F3A2E' },
   rowIcon: { marginRight: 14 },
-  rowLabel: { fontSize: 15, color: '#333', fontWeight: '500' }
+  rowLabel: { fontSize: 15, color: '#D5E7DC', fontWeight: '500' }
 })
