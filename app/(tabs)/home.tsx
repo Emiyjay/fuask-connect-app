@@ -225,11 +225,16 @@ export default function HomeScreen() {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <TouchableOpacity onPress={() => setMenuOpen(true)}>
-          <Ionicons name="menu-outline" size={26} color="#E8F5ED" />
+        <TouchableOpacity onPress={() => setMenuOpen(true)} style={styles.menuButton} accessibilityRole="button" accessibilityLabel="Open menu">
+          <Ionicons name="menu-outline" size={23} color="#E8F5ED" />
         </TouchableOpacity>
-        <Text style={styles.appName}>FUASK Connect</Text>
-        <View style={{ width: 26 }} />
+        <View style={styles.brandBlock}>
+          <Text style={styles.appName}>FUASK <Text style={styles.appNameAccent}>Connect</Text></Text>
+          <Text style={styles.headerTagline}>Your campus. Your community.</Text>
+        </View>
+        <View style={styles.brandMark}>
+          <Ionicons name="school-outline" size={20} color="#07110E" />
+        </View>
       </View>
 
       <View style={styles.toggleRow}>
@@ -256,6 +261,43 @@ export default function HomeScreen() {
         keyExtractor={(item) => item.id}
         contentContainerStyle={styles.feedList}
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} colors={[GREEN]} />}
+        ListHeaderComponent={
+          <View>
+            <View style={styles.heroCard}>
+              <View style={styles.heroCopy}>
+                <Text style={styles.heroEyebrow}>WELCOME TO YOUR CAMPUS</Text>
+                <Text style={styles.heroTitle}>Learn. Connect. Grow.</Text>
+                <Text style={styles.heroDescription}>The people, ideas and opportunities that make FUASK yours.</Text>
+              </View>
+              <View style={styles.heroIconWrap}>
+                <Ionicons name="people" size={30} color="#07110E" />
+              </View>
+            </View>
+
+            <View style={styles.quickActions}>
+              <TouchableOpacity style={styles.quickAction} onPress={() => router.push('/(tabs)/learn')} accessibilityRole="button">
+                <View style={[styles.quickActionIcon, styles.learnIcon]}><Ionicons name="book-outline" size={20} color="#BDF6DF" /></View>
+                <Text style={styles.quickActionLabel}>Learn</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.quickAction} onPress={() => router.push('/(tabs)/clubs')} accessibilityRole="button">
+                <View style={[styles.quickActionIcon, styles.clubsIcon]}><Ionicons name="people-outline" size={20} color="#BDF6DF" /></View>
+                <Text style={styles.quickActionLabel}>Clubs</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.quickAction} onPress={() => router.push('/(tabs)/market')} accessibilityRole="button">
+                <View style={[styles.quickActionIcon, styles.marketIcon]}><Ionicons name="storefront-outline" size={20} color="#BDF6DF" /></View>
+                <Text style={styles.quickActionLabel}>Marketplace</Text>
+              </TouchableOpacity>
+            </View>
+
+            <View style={styles.feedHeadingRow}>
+              <View>
+                <Text style={styles.feedHeading}>Campus feed</Text>
+                <Text style={styles.feedSubheading}>What’s happening around you</Text>
+              </View>
+              <View style={styles.liveDot} />
+            </View>
+          </View>
+        }
         ListEmptyComponent={<Text style={styles.emptyText}>Nothing posted here yet.</Text>}
         renderItem={({ item }) => (
           <View style={styles.postCard}>
@@ -386,9 +428,31 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#07110E' },
   centered: { flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: '#0D1B16' },
-  header: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: 20, paddingTop: 20, paddingBottom: 12 },
-  appName: { fontSize: 16, fontWeight: '700', color: GREEN },
-  toggleRow: { flexDirection: 'row', marginHorizontal: 20, backgroundColor: '#12271D', borderRadius: 10, padding: 4, marginBottom: 8 },
+  header: { flexDirection: 'row', alignItems: 'center', paddingHorizontal: 20, paddingTop: 18, paddingBottom: 16, gap: 12 },
+  menuButton: { width: 40, height: 40, borderRadius: 14, backgroundColor: '#12271D', borderWidth: 1, borderColor: '#244638', alignItems: 'center', justifyContent: 'center' },
+  brandBlock: { flex: 1 },
+  appName: { fontSize: 18, fontWeight: '800', color: '#E8F5ED', letterSpacing: -0.4 },
+  appNameAccent: { color: GREEN },
+  headerTagline: { fontSize: 11, color: '#9BB7AA', marginTop: 3 },
+  brandMark: { width: 40, height: 40, borderRadius: 14, backgroundColor: GREEN, alignItems: 'center', justifyContent: 'center' },
+  heroCard: { marginTop: 8, marginBottom: 18, padding: 18, minHeight: 150, borderRadius: 22, backgroundColor: '#0E3A2C', borderWidth: 1, borderColor: '#23634A', flexDirection: 'row', alignItems: 'center', overflow: 'hidden' },
+  heroCopy: { flex: 1, paddingRight: 8 },
+  heroEyebrow: { color: '#8BE7C3', fontSize: 9, fontWeight: '800', letterSpacing: 1.1, marginBottom: 8 },
+  heroTitle: { color: '#F2FFF8', fontSize: 23, fontWeight: '800', letterSpacing: -0.7, marginBottom: 7 },
+  heroDescription: { color: '#C2E5D5', fontSize: 12, lineHeight: 18, maxWidth: 240 },
+  heroIconWrap: { width: 58, height: 58, borderRadius: 20, backgroundColor: GREEN, alignItems: 'center', justifyContent: 'center', marginLeft: 4 },
+  quickActions: { flexDirection: 'row', justifyContent: 'space-between', gap: 10, marginBottom: 22 },
+  quickAction: { flex: 1, alignItems: 'center', paddingVertical: 12, paddingHorizontal: 4, borderRadius: 16, backgroundColor: '#0D1B16', borderWidth: 1, borderColor: '#1F3A2E' },
+  quickActionIcon: { width: 42, height: 42, borderRadius: 14, alignItems: 'center', justifyContent: 'center', marginBottom: 8 },
+  learnIcon: { backgroundColor: '#174E3A' },
+  clubsIcon: { backgroundColor: '#174E3A' },
+  marketIcon: { backgroundColor: '#174E3A' },
+  quickActionLabel: { color: '#D5E7DC', fontSize: 11, fontWeight: '700' },
+  feedHeadingRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 },
+  feedHeading: { color: '#E8F5ED', fontSize: 18, fontWeight: '800', letterSpacing: -0.3 },
+  feedSubheading: { color: '#80998C', fontSize: 11, marginTop: 3 },
+  liveDot: { width: 8, height: 8, borderRadius: 4, backgroundColor: GREEN, marginRight: 4 },
+  toggleRow: { flexDirection: 'row', marginHorizontal: 20, backgroundColor: '#12271D', borderRadius: 12, padding: 4, marginBottom: 8 },
   toggleButton: { flex: 1, paddingVertical: 8, borderRadius: 8, alignItems: 'center' },
   toggleButtonActive: { backgroundColor: GREEN },
   toggleText: { fontSize: 13, fontWeight: '600', color: '#B6CEC1' },
