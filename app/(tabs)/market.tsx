@@ -173,9 +173,9 @@ export default function MarketScreen() {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <View>
-          <Text style={styles.title}>Marketplace</Text>
-          <Text style={styles.subtitle}>Verified campus businesses</Text>
+        <View style={styles.headerCopy}>
+          <Text style={styles.title}>Campus Marketplace</Text>
+          <Text style={styles.subtitle}>Discover student businesses and services</Text>
         </View>
         <TouchableOpacity
           style={styles.addButton}
@@ -190,6 +190,16 @@ export default function MarketScreen() {
 
       <FlatList
         data={businesses}
+        ListHeaderComponent={
+          <View style={styles.marketBanner}>
+            <View style={styles.marketBannerCopy}>
+              <Text style={styles.marketEyebrow}>SHOP CAMPUS</Text>
+              <Text style={styles.marketBannerTitle}>Good things start here.</Text>
+              <Text style={styles.marketBannerText}>Support local student businesses and find services around FUASK.</Text>
+            </View>
+            <View style={styles.marketBannerIcon}><Ionicons name="storefront" size={24} color="#07110E" /></View>
+          </View>
+        }
         keyExtractor={(item) => item._id}
         contentContainerStyle={styles.list}
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} colors={[GREEN]} />}
@@ -344,11 +354,18 @@ const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#07110E' },
   centered: { flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: '#0D1B16' },
   header: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', padding: 20, paddingBottom: 12 },
-  title: { fontSize: 20, fontWeight: '700', color: '#E8F5ED' },
+  headerCopy: { flex: 1, paddingRight: 8 },
+  title: { fontSize: 22, fontWeight: '800', color: '#E8F5ED', letterSpacing: -0.5 },
   subtitle: { fontSize: 11, color: '#9BB7AA', marginTop: 2 },
   addButton: { flexDirection: 'row', alignItems: 'center', backgroundColor: GREEN, borderRadius: 14, paddingHorizontal: 12, paddingVertical: 8, gap: 4 },
   addButtonText: { color: '#07110E', fontWeight: '700', fontSize: 12 },
   list: { paddingHorizontal: 20, paddingBottom: 40 },
+  marketBanner: { flexDirection: 'row', alignItems: 'center', marginBottom: 18, padding: 17, borderRadius: 18, backgroundColor: '#0E3A2C', borderWidth: 1, borderColor: '#23634A' },
+  marketBannerCopy: { flex: 1, paddingRight: 8 },
+  marketEyebrow: { color: '#8BE7C3', fontSize: 9, fontWeight: '800', letterSpacing: 1.1, marginBottom: 7 },
+  marketBannerTitle: { color: '#F2FFF8', fontSize: 17, fontWeight: '800', marginBottom: 5 },
+  marketBannerText: { color: '#C2E5D5', fontSize: 11, lineHeight: 16 },
+  marketBannerIcon: { width: 48, height: 48, borderRadius: 16, backgroundColor: GREEN, alignItems: 'center', justifyContent: 'center' },
   emptyText: { color: '#80998C', fontSize: 14, textAlign: 'center', marginTop: 60, paddingHorizontal: 30 },
   card: { flexDirection: 'row', backgroundColor: '#0D1B16', borderRadius: 16, padding: 13, marginBottom: 12, borderWidth: 1, borderColor: '#1F3A2E' },
   featuredCard: { borderColor: '#d9c27a' },
