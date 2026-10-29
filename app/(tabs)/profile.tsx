@@ -76,18 +76,24 @@ export default function ProfileScreen() {
 
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.content}>
-      <View style={styles.avatarCircle}>
+      <View style={styles.profileHeading}>
+        <Text style={styles.profileTitle}>Your Profile</Text>
+        <Text style={styles.profileSubtitle}>Your identity in the FUASK community</Text>
+      </View>
+      <View style={styles.identityPanel}>
+        <View style={styles.avatarCircle}>
         <Text style={styles.avatarText}>{initials}</Text>
       </View>
-      <Text style={styles.name}>{user?.displayName || 'Loading…'}</Text>
+        <Text style={styles.name}>{user?.displayName || 'Loading…'}</Text>
 
-      {user && (
+        {user && (
         <View style={styles.badgeRow}>
           <View style={styles.badge}><Text style={styles.badgeText}>{user.department}</Text></View>
           <View style={styles.badge}><Text style={styles.badgeText}>{user.level}</Text></View>
           <View style={[styles.badge, styles.badgeRole]}><Text style={[styles.badgeText, styles.badgeRoleText]}>{user.role}</Text></View>
         </View>
-      )}
+        )}
+      </View>
 
       {academicChain.length > 0 && (
         <View style={styles.breadcrumbCard}>
@@ -126,8 +132,12 @@ export default function ProfileScreen() {
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#07110E' },
-  content: { padding: 20, alignItems: 'center', paddingBottom: 60 },
-  avatarCircle: { width: 84, height: 84, borderRadius: 42, backgroundColor: GREEN, alignItems: 'center', justifyContent: 'center', marginTop: 12, marginBottom: 14 },
+  content: { padding: 20, paddingBottom: 60 },
+  profileHeading: { width: '100%', marginBottom: 18 },
+  profileTitle: { fontSize: 23, fontWeight: '800', color: '#E8F5ED', letterSpacing: -0.5 },
+  profileSubtitle: { fontSize: 11, color: '#9BB7AA', marginTop: 4 },
+  identityPanel: { width: '100%', alignItems: 'center', padding: 20, borderRadius: 20, backgroundColor: '#0E3A2C', borderWidth: 1, borderColor: '#23634A', marginBottom: 20 },
+  avatarCircle: { width: 84, height: 84, borderRadius: 42, backgroundColor: GREEN, alignItems: 'center', justifyContent: 'center', marginTop: 2, marginBottom: 14 },
   avatarText: { color: '#07110E', fontSize: 28, fontWeight: '700' },
   name: { fontSize: 20, fontWeight: '700', color: '#E8F5ED', marginBottom: 10 },
   badgeRow: { flexDirection: 'row', gap: 8, marginBottom: 20 },
