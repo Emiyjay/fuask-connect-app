@@ -10,6 +10,7 @@ import { Ionicons } from '@expo/vector-icons'
 import { useRouter } from 'expo-router'
 import api from '../../config/api'
 import SideMenu from '../../components/SideMenu'
+import { CAMPUS_SHORTCUTS } from '../../config/campusFeatures'
 
 const GREEN = '#38D39F'
 
@@ -275,18 +276,23 @@ export default function HomeScreen() {
             </View>
 
             <View style={styles.quickActions}>
-              <TouchableOpacity style={styles.quickAction} onPress={() => router.push('/(tabs)/learn')} accessibilityRole="button">
-                <View style={[styles.quickActionIcon, styles.learnIcon]}><Ionicons name="book-outline" size={20} color="#BDF6DF" /></View>
-                <Text style={styles.quickActionLabel}>Learn</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.quickAction} onPress={() => router.push('/(tabs)/clubs')} accessibilityRole="button">
-                <View style={[styles.quickActionIcon, styles.clubsIcon]}><Ionicons name="people-outline" size={20} color="#BDF6DF" /></View>
-                <Text style={styles.quickActionLabel}>Clubs</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.quickAction} onPress={() => router.push('/(tabs)/market')} accessibilityRole="button">
-                <View style={[styles.quickActionIcon, styles.marketIcon]}><Ionicons name="storefront-outline" size={20} color="#BDF6DF" /></View>
-                <Text style={styles.quickActionLabel}>Marketplace</Text>
-              </TouchableOpacity>
+              {CAMPUS_SHORTCUTS.map((item) => (
+                <TouchableOpacity
+                  key={item.key}
+                  style={styles.quickAction}
+                  onPress={() => router.push(item.route as any)}
+                  accessibilityRole="button"
+                  accessibilityLabel={item.label}
+                >
+                  <View style={[
+                    styles.quickActionIcon,
+                    item.tone === 'mint' ? styles.learnIcon : item.tone === 'blue' ? styles.clubsIcon : styles.marketIcon
+                  ]}>
+                    <Ionicons name={item.icon as any} size={20} color="#BDF6DF" />
+                  </View>
+                  <Text style={styles.quickActionLabel}>{item.label}</Text>
+                </TouchableOpacity>
+              ))}
             </View>
 
             <View style={styles.feedHeadingRow}>
@@ -441,8 +447,8 @@ const styles = StyleSheet.create({
   heroTitle: { color: '#F2FFF8', fontSize: 23, fontWeight: '800', letterSpacing: -0.7, marginBottom: 7 },
   heroDescription: { color: '#C2E5D5', fontSize: 12, lineHeight: 18, maxWidth: 240 },
   heroIconWrap: { width: 58, height: 58, borderRadius: 20, backgroundColor: GREEN, alignItems: 'center', justifyContent: 'center', marginLeft: 4 },
-  quickActions: { flexDirection: 'row', justifyContent: 'space-between', gap: 10, marginBottom: 22 },
-  quickAction: { flex: 1, alignItems: 'center', paddingVertical: 12, paddingHorizontal: 4, borderRadius: 16, backgroundColor: '#0D1B16', borderWidth: 1, borderColor: '#1F3A2E' },
+  quickActions: { flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between', gap: 10, marginBottom: 22 },
+  quickAction: { width: '31%', flexGrow: 1, alignItems: 'center', paddingVertical: 12, paddingHorizontal: 4, borderRadius: 16, backgroundColor: '#0D1B16', borderWidth: 1, borderColor: '#1F3A2E' },
   quickActionIcon: { width: 42, height: 42, borderRadius: 14, alignItems: 'center', justifyContent: 'center', marginBottom: 8 },
   learnIcon: { backgroundColor: '#174E3A' },
   clubsIcon: { backgroundColor: '#174E3A' },
