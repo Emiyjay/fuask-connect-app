@@ -73,7 +73,7 @@ The UI should combine the richer campus-feed experience with the clarity of a mo
 - Do not add a tab for a feature that does not yet have a reliable route.
 
 ### 7. Replaceable feature navigation
-- Student-facing shortcuts are registered in `config/campusFeatures.ts` (`CAMPUS_SHORTCUTS` and `MORE_FEATURES`).
+- Student-facing destinations are defined once in `config/campusFeatures.ts` (`CAMPUS_FEATURES`); `CAMPUS_SHORTCUTS` and `MORE_FEATURES` are derived from its visibility flags.
 - Add, remove, rename, or reorder a shortcut by editing the registry rather than duplicating navigation markup across screens.
 - Every registered route must map to an existing Expo Router screen; do not add placeholder destinations.
 - Feature data remains API-driven. The navigation registry controls discoverability only and must not invent timetable entries, learning materials, club memberships, or lost-item reports.
