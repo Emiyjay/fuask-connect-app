@@ -197,11 +197,22 @@ export default function LearnScreen() {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.title}>Learn</Text>
+        <View style={styles.headerCopy}>
+          <Text style={styles.title}>Learning Hub</Text>
+          <Text style={styles.subtitle}>Study resources, shared by your campus</Text>
+        </View>
         <TouchableOpacity style={styles.uploadButton} onPress={() => setUploadVisible(true)}>
           <Ionicons name="add" size={18} color="#fff" />
           <Text style={styles.uploadButtonText}>Upload</Text>
         </TouchableOpacity>
+      </View>
+
+      <View style={styles.learningBanner}>
+        <View style={styles.learningBannerIcon}><Ionicons name="book" size={23} color="#07110E" /></View>
+        <View style={styles.learningBannerCopy}>
+          <Text style={styles.learningBannerTitle}>Learn together</Text>
+          <Text style={styles.learningBannerText}>Find course materials or share a resource with your cohort.</Text>
+        </View>
       </View>
 
       <View style={styles.tabRow}>
@@ -309,7 +320,14 @@ const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#07110E' },
   centered: { flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: '#0D1B16' },
   header: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', padding: 20, paddingBottom: 12 },
-  title: { fontSize: 20, fontWeight: '700', color: '#E8F5ED' },
+  headerCopy: { flex: 1, paddingRight: 8 },
+  title: { fontSize: 23, fontWeight: '800', color: '#E8F5ED', letterSpacing: -0.5 },
+  subtitle: { fontSize: 11, color: '#9BB7AA', marginTop: 4 },
+  learningBanner: { flexDirection: 'row', alignItems: 'center', marginHorizontal: 20, marginTop: 2, marginBottom: 18, padding: 16, borderRadius: 18, backgroundColor: '#0E3A2C', borderWidth: 1, borderColor: '#23634A' },
+  learningBannerIcon: { width: 46, height: 46, borderRadius: 15, backgroundColor: GREEN, alignItems: 'center', justifyContent: 'center', marginRight: 12 },
+  learningBannerCopy: { flex: 1 },
+  learningBannerTitle: { fontSize: 14, fontWeight: '800', color: '#F2FFF8', marginBottom: 4 },
+  learningBannerText: { fontSize: 11, lineHeight: 16, color: '#C2E5D5' },
   uploadButton: { flexDirection: 'row', alignItems: 'center', backgroundColor: GREEN, borderRadius: 14, paddingHorizontal: 14, paddingVertical: 8, gap: 4 },
   uploadButtonText: { color: '#07110E', fontWeight: '700', fontSize: 13 },
   tabRow: { flexDirection: 'row', marginHorizontal: 20, backgroundColor: '#12271D', borderRadius: 10, padding: 4, marginBottom: 8 },
